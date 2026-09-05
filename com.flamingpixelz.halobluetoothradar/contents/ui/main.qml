@@ -5,6 +5,7 @@ import org.kde.plasma.plasmoid
 PlasmoidItem {
     id: root
     preferredRepresentation: compactRepresentation
+    property string radarColour: '#8c2ca2'
 
     compactRepresentation: Item {
         width: 32
@@ -15,12 +16,12 @@ PlasmoidItem {
             onClicked: root.expanded = !root.expanded
         }
 
-        Rectangle {
-            anchors.centerIn: parent
-            width: 20
-            height: 20
-            radius: 10
-            color: "#bc37da"
+        Image {
+           anchors.centerIn: parent
+           width: 32
+           height: 32
+           source: "../assets/icons/forerunner-bt.svg" 
+           fillMode: Image.PreserveAspectFit
         }
     }
 
@@ -49,7 +50,7 @@ PlasmoidItem {
                 color: "transparent"
                 radius: 75
                 border.width: 2
-                border.color: '#bc37da'
+                border.color: radarColour
 
                 Canvas {
                     anchors.fill: parent
@@ -75,7 +76,7 @@ PlasmoidItem {
                             cx,cy,r
                         )
 
-                        gradient.addColorStop(0, "#bc37da")
+                        gradient.addColorStop(0, radarColour)
                         gradient.addColorStop(0.95, "transparent")
                         
                         ctx.lineTo(cx, cy)
@@ -95,7 +96,7 @@ PlasmoidItem {
                     radius: 75
 
                     color: "transparent"
-                    border.color: "#bc37da"
+                    border.color: radarColour
                     border.width: 3
                     scale: 0
                     opacity: 1.0
@@ -155,7 +156,7 @@ PlasmoidItem {
                 anchors.centerIn: parent
                 width: 45
                 height: 45
-                color: '#bc37da'
+                color: radarColour
                 radius: 22.5
                 opacity: 0.4
             }
