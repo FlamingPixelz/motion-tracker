@@ -45,9 +45,9 @@ PlasmoidItem {
                 anchors.top: parent.top
                 anchors.topMargin: 10
 
-                text: "Bluetooth"
+                text: "...Connect Devices..."
                 font.family: haloFont.name
-                color: "#495F94"
+                color: '#544970'
                 font.pixelSize: 16
             }
 

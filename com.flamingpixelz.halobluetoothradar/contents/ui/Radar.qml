@@ -3,6 +3,7 @@ import QtQuick
 Item {
     id: radar
     property string radarColour: '#8c2ca2'
+    property string blipColour: "#DA3E62"
 
         // Arc
         property real sliceDegrees: 70
@@ -10,8 +11,6 @@ Item {
         property real centre: -Math.PI / 2
         property real startAngle: centre - sliceRadians / 2
         property real endAngle: centre + sliceRadians / 2
-
-
 
         Rectangle {
             anchors.fill: parent
@@ -22,9 +21,69 @@ Item {
                 width: 150
                 height: 150
                 color: "transparent"
-                radius: 75
+                radius: height/2
                 border.width: 2
                 border.color: radarColour
+
+                //Blips
+                Repeater {
+                    model: 4
+
+                    Rectangle {
+                        width: 6
+                        height: 6
+                        radius: height/2
+                        color: blipColour
+
+                        property var positions: [
+                            Qt.point(100, 40),
+                            Qt.point(120, 90),
+                            Qt.point(65, 30),
+                            Qt.point(10, 70)
+                        ]
+
+                        x: positions[index].x
+                        y: positions[index].y
+
+                    SequentialAnimation on opacity {
+                        loops: Animation.Infinite
+
+                        NumberAnimation {
+                            from: 0.4
+                            to: 1.0
+                            duration: 1200
+                            easing.type: Easing.InOutQuad
+                        }
+                        NumberAnimation {
+                            from: 1.0
+                            to: 0.3
+                            duration: 1200
+                            easing.type: Easing.InOutQuad
+                        }
+                        PauseAnimation {
+                            duration: index * 250
+                        }
+                    }
+
+                    SequentialAnimation on scale {
+                        loops: Animation.Infinite
+
+                        NumberAnimation {
+                            from: 0.8
+                            to: 1.0
+                            duration: 1200
+                            easing.type: Easing.InOutQuad
+                        }
+
+                        NumberAnimation {
+                            from: 1.0
+                            to: 0.8
+                            duration: 1200
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
+                }
+            }
 
                 Canvas {
                     anchors.fill: parent
@@ -67,7 +126,7 @@ Item {
 
                     width: 150
                     height: 150
-                    radius: 75
+                    radius: height/2
 
                     color: "transparent"
                     border.color: radarColour
@@ -131,7 +190,7 @@ Item {
                 width: 45
                 height: 45
                 color: radarColour
-                radius: 22.5
+                radius: height/2
                 opacity: 0.4
             }
         }
