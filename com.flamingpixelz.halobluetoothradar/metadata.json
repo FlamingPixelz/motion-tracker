@@ -1,0 +1,11 @@
+{
+    "KPlugin": {
+        "Name": "Halo Bluetooth Radar",
+        "Description": "Halo-style radar for searching for bluetooth devices",
+        "Icon": "preferences-system-bluetooth",
+        "Id": "com.flamingpixelz.halobluetoothradar",
+        "Version": "1.0"
+    },
+    "KPackageStructure": "Plasma/Applet",
+    "X-Plasma-API-Minimum-Version": "6.0"
+}
