@@ -4,7 +4,26 @@ import org.kde.plasma.plasmoid
 
 PlasmoidItem {
     id: root
-    preferredRepresentation: fullRepresentation
+    preferredRepresentation: compactRepresentation
+
+    compactRepresentation: Item {
+        width: 32
+        height: 32
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: root.expanded = !root.expanded
+        }
+
+        Rectangle {
+            anchors.centerIn: parent
+            width: 20
+            height: 20
+            radius: 10
+            color: "#bc37da"
+        }
+    }
+
 
     fullRepresentation: Item {
         Layout.minimumWidth: 300
@@ -137,7 +156,7 @@ PlasmoidItem {
                 width: 45
                 height: 45
                 color: '#bc37da'
-                radius: 180
+                radius: 22.5
                 opacity: 0.4
             }
         }
