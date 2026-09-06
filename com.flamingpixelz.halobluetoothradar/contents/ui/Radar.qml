@@ -13,7 +13,7 @@ Item {
     property real endAngle: centre + sliceRadians / 2
 
     property real pulseRadius: 0
-    
+
         // Radar Circle
         Rectangle {
             anchors.fill: parent
@@ -28,136 +28,6 @@ Item {
                 border.width: 2
                 border.color: radarColour
 
-                //Blips
-                Repeater {
-
-                    model: 4
-
-                    Rectangle {
-                        id: blip
-                        property real normalSize: 6
-                        property real detectedSize: 7
-                        property bool detected: false
-                        width: detected ? detectedSize : normalSize
-                        height: detected ? detectedSize : normalSize
-                        radius: height/2
-                        color: blipColour
-
-                        property var positions: [
-                            Qt.point(100, 40),
-                            Qt.point(120, 90),
-                            Qt.point(65, 30),
-                            Qt.point(10, 70)
-                        ]
-
-                        Component.onCompleted: {
-                            blip.x = positions[index].x
-                            blip.y = positions[index].y   
-
-                            fadeAnimation.start()
-                        }
-
-                        Behavior on width {
-                            NumberAnimation {
-                                duration: 150
-                                easing.type: Easing.OutQuad
-                            }
-                        }
-
-                        Behavior on height {
-                            NumberAnimation {
-                                duration: 150
-                                easing.type: Easing.OutQuad
-                            }
-                        }
-
-
-                        property real velocityX: (Math.random() - 0.5) * 0.5
-                        property real velocityY: (Math.random() - 0.5) * 0.5
-
-                        // Random movement
-                        Timer {
-                            interval: 50
-                            running: true
-                            repeat: true
-
-                            onTriggered: {
-
-                                blip.velocityX += (Math.random() - 0.5 ) * 0.09
-                                blip.velocityY += (Math.random() - 0.5 ) * 0.09
-                                blip.velocityX = Math.max(-1.2, Math.min(1.2, blip.velocityX))
-                                blip.velocityY = Math.max(-1.2, Math.min(1.2, blip.velocityY))
-
-                                var newX = blip.x + blip.velocityX
-                                var newY = blip.y + blip.velocityY
-
-                                var centreX = 75
-                                var centreY = 75
-                                var maxRadius = 65
-
-                                var dx = newX - centreX
-                                var dy = newY - centreY
-                                var dist = Math.sqrt(dx * dx + dy * dy)
-
-                                if(dist > maxRadius) {
-                                    var nx = dx / dist
-                                    var ny = dy / dist
-                                    var dot = blip.velocityX * nx + blip.velocityY * ny
-
-                                    blip.velocityX -= 2 * dot * nx
-                                    blip.velocityY -= 2 * dot * ny
-
-                                    newX = centreX + nx * maxRadius
-                                    newY = centreY + ny * maxRadius
-                                }
-
-                                blip.x = newX
-                                blip.y = newY
-                            }
-                        }
-
-                        // Blip increasing in size when hit by pulse
-                        Timer {
-                            interval: 30
-                            running: true
-                            repeat: true
-
-                            onTriggered: {
-                                var dx = blip.x + blip.width / 2 - 75
-                                var dy = blip.y + blip.height / 2 - 75
-                                var distance = Math.sqrt(dx * dx + dy * dy)
-                                var difference = Math.abs(distance - radar.pulseRadius)
-
-                                if(difference < 4 && !blip.detected) {
-                                    blip.opacity = 1.0
-                                    fadeAnimation.restart()
-                                    blip.detected = true
-                                    detectedTimer.restart()
-                                }
-                        }
-                    }
-                    // Blip remains large for set period
-                    Timer {
-                        id: detectedTimer 
-                        interval: 300
-                        repeat: false
-
-                        onTriggered: {
-                            blip.detected = false
-                        }
-                    }
-
-                    NumberAnimation {
-                        id: fadeAnimation
-                        target: blip
-                        property: "opacity"
-                        from: 1.0
-                        to: 0.2
-                        duration: 3000
-                        easing.type: Easing.Linear
-                    }
-                }
-            }
                 // Wedge
                 Canvas {
                     anchors.fill: parent
@@ -282,6 +152,138 @@ Item {
                 color: radarColour
                 radius: height/2
                 opacity: 0.4
+            }
+
+                //Blips
+                Repeater {
+
+                    model: 4
+
+                    Rectangle {
+                        id: blip
+                        property real normalSize: 6
+                        property real detectedSize: 7
+                        property bool detected: false
+                        width: detected ? detectedSize : normalSize
+                        height: detected ? detectedSize : normalSize
+                        radius: height/2
+                        color: blipColour
+
+                        property var positions: [
+                            Qt.point(100, 40),
+                            Qt.point(120, 90),
+                            Qt.point(65, 30),
+                            Qt.point(10, 70)
+                        ]
+
+                        Component.onCompleted: {
+                            blip.x = positions[index].x
+                            blip.y = positions[index].y   
+
+                            fadeAnimation.start()
+                        }
+
+                        Behavior on width {
+                            NumberAnimation {
+                                duration: 150
+                                easing.type: Easing.OutQuad
+                            }
+                        }
+
+                        Behavior on height {
+                            NumberAnimation {
+                                duration: 150
+                                easing.type: Easing.OutQuad
+                            }
+                        }
+
+
+                        property real velocityX: (Math.random() - 0.5) * 0.5
+                        property real velocityY: (Math.random() - 0.5) * 0.5
+
+                        // Random movement
+                        Timer {
+                            interval: 50
+                            running: true
+                            repeat: true
+
+                            onTriggered: {
+
+                                blip.velocityX += (Math.random() - 0.5 ) * 0.09
+                                blip.velocityY += (Math.random() - 0.5 ) * 0.09
+                                blip.velocityX = Math.max(-1.2, Math.min(1.2, blip.velocityX))
+                                blip.velocityY = Math.max(-1.2, Math.min(1.2, blip.velocityY))
+
+                                var newX = blip.x + blip.velocityX
+                                var newY = blip.y + blip.velocityY
+
+                                var centreX = 75
+                                var centreY = 75
+                                var maxRadius = 65
+
+                                var dx = newX - centreX
+                                var dy = newY - centreY
+                                var dist = Math.sqrt(dx * dx + dy * dy)
+
+                                if(dist > maxRadius) {
+                                    var nx = dx / dist
+                                    var ny = dy / dist
+                                    var dot = blip.velocityX * nx + blip.velocityY * ny
+
+                                    blip.velocityX -= 2 * dot * nx
+                                    blip.velocityY -= 2 * dot * ny
+
+                                    newX = centreX + nx * maxRadius
+                                    newY = centreY + ny * maxRadius
+                                }
+
+                                blip.x = newX
+                                blip.y = newY
+                            }
+                        }
+
+                        // Blip increasing in size when hit by pulse
+                        Timer {
+                            interval: 30
+                            running: true
+                            repeat: true
+
+                            onTriggered: {
+                                var dx = blip.x + blip.width / 2 - 75
+                                var dy = blip.y + blip.height / 2 - 75
+                                var distance = Math.sqrt(dx * dx + dy * dy)
+                                var difference = Math.abs(distance - radar.pulseRadius)
+
+                                if(difference < 4 && !blip.detected) {
+                                    blip.opacity = 1.0
+                                    fadeAnimation.restart()
+                                    blip.detected = true
+                                    detectedTimer.restart()
+                                }
+                        }
+                    }
+                    // Blip remains large for set period
+                    Timer {
+                        id: detectedTimer 
+                        interval: 300
+                        repeat: false
+
+                        onTriggered: {
+                            blip.detected = false
+                        }
+                    }
+
+                    // Blip fades
+                    NumberAnimation {
+                        id: fadeAnimation
+                        target: blip
+                        property: "opacity"
+                        from: 1.0
+                        to: 0.2
+                        duration: 3000
+                        easing.type: Easing.Linear
+                    }
+                }
             }
         }
 }
