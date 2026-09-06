@@ -12,18 +12,8 @@ Item {
     property real startAngle: centre - sliceRadians / 2
     property real endAngle: centre + sliceRadians / 2
 
-    property real sweepAngle: -Math.PI / 2
     property real pulseRadius: 0
-
-    NumberAnimation {
-        target: radar
-        property: sweepAngle
-        from: -Math.PI / 2
-        to: 3 * Math.PI / 2
-        duration: 2500
-        loops: Animation.Infinite
-    }
-
+    
         // Radar Circle
         Rectangle {
             anchors.fill: parent
