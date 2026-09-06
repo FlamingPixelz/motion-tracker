@@ -5,13 +5,26 @@ Item {
     property string radarColour: '#8c2ca2'
     property string blipColour: "#DA3E62"
 
-        // Arc
-        property real sliceDegrees: 70
-        property real sliceRadians: sliceDegrees * Math.PI / 180
-        property real centre: -Math.PI / 2
-        property real startAngle: centre - sliceRadians / 2
-        property real endAngle: centre + sliceRadians / 2
+    // Arc
+    property real sliceDegrees: 70
+    property real sliceRadians: sliceDegrees * Math.PI / 180
+    property real centre: -Math.PI / 2
+    property real startAngle: centre - sliceRadians / 2
+    property real endAngle: centre + sliceRadians / 2
 
+    property real sweepAngle: -Math.PI / 2
+    property real pulseRadius: 0
+
+    NumberAnimation {
+        target: radar
+        property: sweepAngle
+        from: -Math.PI / 2
+        to: 3 * Math.PI / 2
+        duration: 2500
+        loops: Animation.Infinite
+    }
+
+        // Radar Circle
         Rectangle {
             anchors.fill: parent
             color: "#130F1D"
@@ -27,11 +40,16 @@ Item {
 
                 //Blips
                 Repeater {
+
                     model: 4
 
                     Rectangle {
-                        width: 6
-                        height: 6
+                        id: blip
+                        property real normalSize: 6
+                        property real detectedSize: 7
+                        property bool detected: false
+                        width: detected ? detectedSize : normalSize
+                        height: detected ? detectedSize : normalSize
                         radius: height/2
                         color: blipColour
 
@@ -42,49 +60,115 @@ Item {
                             Qt.point(10, 70)
                         ]
 
-                        x: positions[index].x
-                        y: positions[index].y
+                        Component.onCompleted: {
+                            blip.x = positions[index].x
+                            blip.y = positions[index].y   
 
-                    SequentialAnimation on opacity {
-                        loops: Animation.Infinite
+                            fadeAnimation.start()
+                        }
 
-                        NumberAnimation {
-                            from: 0.4
-                            to: 1.0
-                            duration: 1200
-                            easing.type: Easing.InOutQuad
+                        Behavior on width {
+                            NumberAnimation {
+                                duration: 150
+                                easing.type: Easing.OutQuad
+                            }
                         }
-                        NumberAnimation {
-                            from: 1.0
-                            to: 0.3
-                            duration: 1200
-                            easing.type: Easing.InOutQuad
+
+                        Behavior on height {
+                            NumberAnimation {
+                                duration: 150
+                                easing.type: Easing.OutQuad
+                            }
                         }
-                        PauseAnimation {
-                            duration: index * 250
+
+
+                        property real velocityX: (Math.random() - 0.5) * 0.5
+                        property real velocityY: (Math.random() - 0.5) * 0.5
+
+                        // Random movement
+                        Timer {
+                            interval: 50
+                            running: true
+                            repeat: true
+
+                            onTriggered: {
+
+                                blip.velocityX += (Math.random() - 0.5 ) * 0.09
+                                blip.velocityY += (Math.random() - 0.5 ) * 0.09
+                                blip.velocityX = Math.max(-1.2, Math.min(1.2, blip.velocityX))
+                                blip.velocityY = Math.max(-1.2, Math.min(1.2, blip.velocityY))
+
+                                var newX = blip.x + blip.velocityX
+                                var newY = blip.y + blip.velocityY
+
+                                var centreX = 75
+                                var centreY = 75
+                                var maxRadius = 65
+
+                                var dx = newX - centreX
+                                var dy = newY - centreY
+                                var dist = Math.sqrt(dx * dx + dy * dy)
+
+                                if(dist > maxRadius) {
+                                    var nx = dx / dist
+                                    var ny = dy / dist
+                                    var dot = blip.velocityX * nx + blip.velocityY * ny
+
+                                    blip.velocityX -= 2 * dot * nx
+                                    blip.velocityY -= 2 * dot * ny
+
+                                    newX = centreX + nx * maxRadius
+                                    newY = centreY + ny * maxRadius
+                                }
+
+                                blip.x = newX
+                                blip.y = newY
+                            }
+                        }
+
+                        // Blip increasing in size when hit by pulse
+                        Timer {
+                            interval: 30
+                            running: true
+                            repeat: true
+
+                            onTriggered: {
+                                var dx = blip.x + blip.width / 2 - 75
+                                var dy = blip.y + blip.height / 2 - 75
+                                var distance = Math.sqrt(dx * dx + dy * dy)
+                                var difference = Math.abs(distance - radar.pulseRadius)
+
+                                if(difference < 4 && !blip.detected) {
+                                    blip.opacity = 1.0
+                                    fadeAnimation.restart()
+                                    blip.detected = true
+                                    detectedTimer.restart()
+                                }
+                        }
+                    }
+                    // Blip remains large for set period
+                    Timer {
+                        id: detectedTimer 
+                        interval: 300
+                        repeat: false
+
+                        onTriggered: {
+                            blip.detected = false
                         }
                     }
 
-                    SequentialAnimation on scale {
-                        loops: Animation.Infinite
-
-                        NumberAnimation {
-                            from: 0.8
-                            to: 1.0
-                            duration: 1200
-                            easing.type: Easing.InOutQuad
-                        }
-
-                        NumberAnimation {
-                            from: 1.0
-                            to: 0.8
-                            duration: 1200
-                            easing.type: Easing.InOutQuad
-                        }
+                    NumberAnimation {
+                        id: fadeAnimation
+                        target: blip
+                        property: "opacity"
+                        from: 1.0
+                        to: 0.2
+                        duration: 3000
+                        easing.type: Easing.Linear
                     }
                 }
             }
-
+                // Wedge
                 Canvas {
                     anchors.fill: parent
                     onPaint: {
@@ -116,7 +200,6 @@ Item {
                         ctx.globalAlpha = 0.7
                         ctx.fillStyle = gradient
                         ctx.fill()
-                        ctx. stroke()
                     }
                 }
                 // Pulse Animation
@@ -146,7 +229,18 @@ Item {
                             to: 1
                             duration: 1500
                             easing.type: Easing.OutQuad
+
                 }
+
+                        NumberAnimation {
+                            target: radar
+                            property: "pulseRadius"
+                            from: 0
+                            to: 75
+                            duration: 1500
+                            easing.type: Easing.OutQuad
+
+                        }
 
                         NumberAnimation {
                             target: pulse
@@ -177,6 +271,12 @@ Item {
             }
 
                 PropertyAction {
+                    target: radar
+                    property: "pulseRadius"
+                    value: 0
+                }
+
+                PropertyAction {
                     target: pulse
                     property: "opacity"
                     value: 1.0
@@ -184,7 +284,7 @@ Item {
         }
      }
 }
-
+            // Inner Circle
             Rectangle {
                 anchors.centerIn: parent
                 width: 45
