@@ -20,46 +20,47 @@ Item {
         }
     }
 
+    function deviceToEntry(device) {
+        return {
+            address: device.address,
+            name: device.name || device.address,
+            rssi: device.rssi,
+            connected: device.connected
+        }
+    }
+
     Connections {
         target: root.manager
 
         function onOperationalChanged() {
-            console.log("=== Operational:", root.manager.operational, "===")
-            if (root.manager.operational && root.manager.usableAdapter) {
-                console.log(
-                    "Adapter:",
-                    root.manager.usableAdapter.name,
-                    root.manager.usableAdapter.address
-                )
-                root.manager.usableAdapter.startDiscovery()
+
+            if (root.manager.operational) {
+                devicesModel.clear()
+                for(var i = 0; i < root.manager.devices.length; i++) {
+                    devicesModel.append(deviceToEntry(root.manager.devices[i]))
+                }
             }
-            printDevices()
         }
 
         function onDeviceAdded(device) {
-            console.log("Device found:", device.name, device.address, "RSSI:", device.rssi)
+            if (indexOfDevice(device.address) === -1) {
+                devicesModel.append(deviceToEntry(device))
+            }
         }
 
         function onDeviceRemoved(device) {
-            console.log("Device removed", device.address)
+            var idx = indexOfDevice(device.address)
+            if(idx !== -1) devicesModel.remove(idx)
         }
 
         function onDeviceChanged(device) {
-            console.log(
-                "Device Changed:", device.name, device.address,
-                "RSSI:", device.rssi, "Connected:", device.connected
-            )
-        }
-    }
-
-    function printDevices() {
-        console.log("Existing devices:", manager.devices.length)
-        for (var i = 0; i < manager.devices.length; i++) {
-            var device = manager.devices[i]
-            console.log(
-                "Device:", device.name, device.address,
-                "RSSI:", device.rssi, "Connected:", device.connected
-            )
+            var idx = indexOfDevice(device.address) 
+            var entry = deviceToEntry(device)
+            if(idx !== -1) {
+                devicesModel.set(idx, entry)
+            } else {
+                devicesModel.append(entry)
+            }
         }
     }
 }

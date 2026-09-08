@@ -5,6 +5,7 @@ Item {
     property string radarColour: '#8c2ca2'
     property string blipColour: "#DA3E62"
     property real radarSize: 150
+    property var devicesModel: null
 
     // Arc
     property real sliceDegrees: 70
@@ -161,7 +162,7 @@ Item {
                 //Blips
                 Repeater {
 
-                    model: 4
+                    model: radar.devicesModel
 
                     Rectangle {
                         id: blip
@@ -171,18 +172,14 @@ Item {
                         width: detected ? detectedSize : normalSize
                         height: detected ? detectedSize : normalSize
                         radius: height/2
-                        color: blipColour
-
-                        property var positions: [
-                            Qt.point(100, 40),
-                            Qt.point(120, 90),
-                            Qt.point(65, 30),
-                            Qt.point(10, 70)
-                        ]
+                        color: model.connected ? "#495F94" : blipColour
 
                         Component.onCompleted: {
-                            blip.x = positions[index].x
-                            blip.y = positions[index].y   
+
+                            var angle = Math.random() * Math.PI * 2
+                            var dist = Math.random() * 65
+                            blip.x = radarSize/2 + Math.cos(angle) * dist
+                            blip.y = radarSize/2 + Math.sin(angle) * dist   
 
                             fadeAnimation.start()
                         }

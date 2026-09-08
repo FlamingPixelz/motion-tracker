@@ -59,6 +59,7 @@ PlasmoidItem {
             anchors.centerIn: parent
             width: 150
             height: 150
+            devicesModel: bluetoothManager.devicesModel
         }
 
 
