@@ -6,6 +6,16 @@ Item {
 
     readonly property BluezQt.Manager manager: BluezQt.Manager
     property alias devicesModel: devicesModel
+    readonly property bool bluetoothEnabled: manager.bluetoothOperational
+
+    function toggleBt() {
+        var enable = !manager.bluetoothOperational
+        manager.bluetoothBlocked = !enable
+
+        for(var i = 0; i < manager.adapters.length; i++) {
+            manager.adapters[i].powered = enable
+        }
+    }
 
     ListModel {
         id: devicesModel

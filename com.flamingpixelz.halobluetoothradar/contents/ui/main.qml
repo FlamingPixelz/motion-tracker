@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
+import QtQuick.Controls
 
 PlasmoidItem {
     id: root
@@ -55,12 +56,20 @@ PlasmoidItem {
                 font.pixelSize: 16
             }
 
+        Switch {
+            checked: bluetoothManager.bluetoothEnabled
+            onToggled: bluetoothManager.toggleBt()
+        }
+
         Radar {
             anchors.centerIn: parent
             width: 150
             height: 150
             devicesModel: bluetoothManager.devicesModel
+            opacity: bluetoothManager.bluetoothEnabled ? 1.0: 0.3
         }
+
+        
 
 
     }
