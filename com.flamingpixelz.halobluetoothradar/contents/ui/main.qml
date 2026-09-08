@@ -54,6 +54,7 @@ PlasmoidItem {
                 font.family: haloFont.name
                 color: '#544970'
                 font.pixelSize: 16
+                visible: bluetoothManager.bluetoothEnabled
             }
 
         Switch {
@@ -66,8 +67,33 @@ PlasmoidItem {
             width: 150
             height: 150
             devicesModel: bluetoothManager.devicesModel
-            opacity: bluetoothManager.bluetoothEnabled ? 1.0: 0.3
+            visible: bluetoothManager.bluetoothEnabled
         }
+
+        Image {
+            id: offImage
+            anchors.centerIn: parent
+            width: 200
+            height: 200
+            source: "../assets/icons/fog-skull.png" 
+            fillMode: Image.PreserveAspectFit
+            visible: !bluetoothManager.bluetoothEnabled
+            opacity: 0.4
+            smooth: false
+            mipmap: false
+        }
+
+        Text {
+        anchors.top: offImage.bottom
+        anchors.topMargin: 8
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        text: "You'll miss those eyes in the back of your head"
+        font.family: haloFont.name
+        color: '#544970'
+        font.pixelSize: 18
+        visible: !bluetoothManager.bluetoothEnabled
+    }
 
         
 
