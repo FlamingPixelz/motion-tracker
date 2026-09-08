@@ -4,6 +4,7 @@ Item {
     id: radar
     property string radarColour: '#8c2ca2'
     property string blipColour: "#DA3E62"
+    property real radarSize: 150
 
     // Arc
     property real sliceDegrees: 70
@@ -14,6 +15,9 @@ Item {
 
     property real pulseRadius: 0
 
+    property real blipJolt: 0.09
+    property real blipSpeed: 0.5
+
         // Radar Circle
         Rectangle {
             anchors.fill: parent
@@ -21,8 +25,8 @@ Item {
 
             Rectangle {
                 anchors.centerIn: parent
-                width: 150
-                height: 150
+                width: radarSize
+                height: radarSize
                 color: "transparent"
                 radius: height/2
                 border.width: 2
@@ -67,8 +71,8 @@ Item {
                     id: pulse
                     anchors.centerIn: parent
 
-                    width: 150
-                    height: 150
+                    width: radarSize
+                    height: radarSize
                     radius: height/2
 
                     color: "transparent"
@@ -147,8 +151,8 @@ Item {
             // Inner Circle
             Rectangle {
                 anchors.centerIn: parent
-                width: 45
-                height: 45
+                width: radarSize/3.3333333
+                height: radarSize/3.333333
                 color: radarColour
                 radius: height/2
                 opacity: 0.4
@@ -198,8 +202,8 @@ Item {
                         }
 
 
-                        property real velocityX: (Math.random() - 0.5) * 0.5
-                        property real velocityY: (Math.random() - 0.5) * 0.5
+                        property real velocityX: (Math.random() - 0.5) * blipSpeed
+                        property real velocityY: (Math.random() - 0.5) * blipSpeed
 
                         // Random movement
                         Timer {
@@ -209,16 +213,16 @@ Item {
 
                             onTriggered: {
 
-                                blip.velocityX += (Math.random() - 0.5 ) * 0.09
-                                blip.velocityY += (Math.random() - 0.5 ) * 0.09
+                                blip.velocityX += (Math.random() - 0.5 ) * blipJolt
+                                blip.velocityY += (Math.random() - 0.5 ) * blipJolt
                                 blip.velocityX = Math.max(-1.2, Math.min(1.2, blip.velocityX))
                                 blip.velocityY = Math.max(-1.2, Math.min(1.2, blip.velocityY))
 
                                 var newX = blip.x + blip.velocityX
                                 var newY = blip.y + blip.velocityY
 
-                                var centreX = 75
-                                var centreY = 75
+                                var centreX = radarSize/2
+                                var centreY = radarSize/2
                                 var maxRadius = 65
 
                                 var dx = newX - centreX
@@ -249,8 +253,8 @@ Item {
                             repeat: true
 
                             onTriggered: {
-                                var dx = blip.x + blip.width / 2 - 75
-                                var dy = blip.y + blip.height / 2 - 75
+                                var dx = blip.x + blip.width / 2 - radarSize/2
+                                var dy = blip.y + blip.height / 2 - radarSize/2
                                 var distance = Math.sqrt(dx * dx + dy * dy)
                                 var difference = Math.abs(distance - radar.pulseRadius)
 

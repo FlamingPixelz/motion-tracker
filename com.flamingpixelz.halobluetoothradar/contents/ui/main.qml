@@ -7,6 +7,10 @@ PlasmoidItem {
     preferredRepresentation: compactRepresentation
     property color backgroundColour: "#130F1D"
 
+    BluetoothManager {
+        id: bluetoothManager
+    }
+
     compactRepresentation: Item {
         width: 32
         height: 32
