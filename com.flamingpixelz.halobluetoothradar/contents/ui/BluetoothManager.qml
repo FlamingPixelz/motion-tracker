@@ -8,6 +8,7 @@ Item {
     property alias devicesModel: devicesModel
     readonly property bool bluetoothEnabled: manager.bluetoothOperational
 
+    // Turn BT on/off
     function toggleBt() {
         var enable = !manager.bluetoothOperational
         manager.bluetoothBlocked = !enable
@@ -21,20 +22,22 @@ Item {
         id: devicesModel
     }
 
+    // Search for entry whose adress matches
     function indexOfDevice(address) {
         for(var i = 0; i < devicesModel.count; i++) {
             if(devicesModel.get(i).address === address) {
                 return i
             }
-            return -1
         }
+        return -1
     }
 
+    // Converts BluezQt device into plan JS object
     function deviceToEntry(device) {
         return {
             address: device.address,
             name: device.name || device.address,
-            rssi: device.rssi,
+            rssi: device.rssi, // Signal strength
             connected: device.connected
         }
     }
@@ -42,6 +45,7 @@ Item {
     Connections {
         target: root.manager
 
+        // When becomes operational, clear model and repopulate it with every known device
         function onOperationalChanged() {
 
             if (root.manager.operational) {
@@ -52,17 +56,20 @@ Item {
             }
         }
 
+        // Adds new device only if it already isnt present
         function onDeviceAdded(device) {
             if (indexOfDevice(device.address) === -1) {
                 devicesModel.append(deviceToEntry(device))
             }
         }
 
+        // Removes device
         function onDeviceRemoved(device) {
             var idx = indexOfDevice(device.address)
             if(idx !== -1) devicesModel.remove(idx)
         }
 
+        // Device updates
         function onDeviceChanged(device) {
             var idx = indexOfDevice(device.address) 
             var entry = deviceToEntry(device)

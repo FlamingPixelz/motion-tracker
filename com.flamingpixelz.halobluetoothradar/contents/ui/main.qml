@@ -45,21 +45,29 @@ PlasmoidItem {
             color: backgroundColour
         }
 
-        Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top: parent.top
-                anchors.topMargin: 10
 
-                text: "...Connect Devices..."
-                font.family: haloFont.name
-                color: '#544970'
-                font.pixelSize: 16
-                visible: bluetoothManager.bluetoothEnabled
+        Rectangle {
+            id: btButton
+            width: 60
+            height: 60
+            radius: 8
+            color: "transparent"
+
+            Image {
+                anchors.centerIn: parent
+                width: 40
+                height: 40
+                source: bluetoothManager.bluetoothEnabled ? "../assets/icons/fog-off.svg": "../assets/icons/fog-on.svg" 
+                fillMode: Image.PreserveAspectFit
+                mipmap: false
             }
 
-        Switch {
-            checked: bluetoothManager.bluetoothEnabled
-            onToggled: bluetoothManager.toggleBt()
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: bluetoothManager.toggleBt()
+            }
         }
 
         Radar {
@@ -73,6 +81,7 @@ PlasmoidItem {
         Image {
             id: offImage
             anchors.centerIn: parent
+            anchors.verticalCenterOffset: -20
             width: 200
             height: 200
             source: "../assets/icons/fog-skull.png" 
