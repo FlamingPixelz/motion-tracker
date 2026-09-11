@@ -11,8 +11,12 @@ Item {
     // Turn BT on/off
     function toggleBt() {
         var enable = !manager.bluetoothOperational
-        manager.bluetoothBlocked = !enable
 
+        if(enable && manager.bluetoothBlocked) {
+            console.log("Bluetooth is blocked, cannot enable")
+            manager.bluetoothBlocked = false
+            return
+        }
         for(var i = 0; i < manager.adapters.length; i++) {
             manager.adapters[i].powered = enable
         }

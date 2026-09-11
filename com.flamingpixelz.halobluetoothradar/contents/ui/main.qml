@@ -52,6 +52,7 @@ PlasmoidItem {
             height: 60
             radius: 8
             color: "transparent"
+            scale: mouseArea.pressed ? 0.92 : 1.0
 
             Image {
                 anchors.centerIn: parent
@@ -63,10 +64,18 @@ PlasmoidItem {
             }
 
             MouseArea {
+                id: mouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: bluetoothManager.toggleBt()
+            }
+            
+            Behavior on scale {
+                NumberAnimation {
+                    duration: 100
+                    easing.type: Easing.InOutQuad
+                }
             }
         }
 
