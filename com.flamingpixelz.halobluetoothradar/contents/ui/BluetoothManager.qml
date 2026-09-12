@@ -22,6 +22,20 @@ Item {
         }
     }
 
+    function startScan() {
+        var adapter = manager.usableAdapter
+        if(adapter && !adapter.discovering) {
+            adapter.startDiscovery()
+        }
+    }
+
+    function stopScan() {
+        var adapter = manager.usableAdapter 
+        if(adapter && adapter.discovering) {
+            adapter.stopDiscovery()
+        }
+    }
+
     ListModel {
         id: devicesModel
     }
@@ -39,10 +53,10 @@ Item {
     // Converts BluezQt device into plan JS object
     function deviceToEntry(device) {
         return {
-            address: device.address,
-            name: device.name || device.address,
-            rssi: device.rssi, // Signal strength
-            connected: device.connected
+            address: device.address || "",
+            name: device.name || device.address || "Unknown",
+            rssi: (device.rssi !== undefined && device.rssi !== null) ? device.rssi : 0, // Signal strength
+            connected: device.connected === true
         }
     }
 

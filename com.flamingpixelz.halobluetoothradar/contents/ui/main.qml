@@ -12,6 +12,14 @@ PlasmoidItem {
         id: bluetoothManager
     }
 
+    onExpandedChanged: {
+        if (root.expanded) {
+            bluetoothManager.startScan()
+        } else {
+            bluetoothManager.stopScan()
+        }
+    }
+
     compactRepresentation: Item {
         width: 32
         height: 32
@@ -45,7 +53,7 @@ PlasmoidItem {
             color: backgroundColour
         }
 
-
+        // Turn BT on/off button
         Rectangle {
             id: btButton
             width: 60
@@ -80,12 +88,21 @@ PlasmoidItem {
         }
 
         Radar {
+            id: radarDisplay
             anchors.centerIn: parent
             width: 150
             height: 150
             devicesModel: bluetoothManager.devicesModel
             visible: bluetoothManager.bluetoothEnabled
+            active: root.expanded && bluetoothManager.bluetoothEnabled
         }
+
+                DeviceList {
+            width: parent.width
+            height: 200
+            manager: bluetoothManager
+}
+
 
         Image {
             id: offImage

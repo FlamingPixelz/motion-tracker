@@ -6,6 +6,7 @@ Item {
     property string blipColour: "#DA3E62"
     property real radarSize: 150
     property var devicesModel: null
+    property bool active: true
 
     // Arc
     property real sliceDegrees: 70
@@ -83,7 +84,7 @@ Item {
                     opacity: 1.0
 
                 SequentialAnimation {
-                    running: true
+                    running: radar.active
                     loops: Animation.Infinite
 
                      ParallelAnimation {
@@ -152,8 +153,8 @@ Item {
             // Inner Circle
             Rectangle {
                 anchors.centerIn: parent
-                width: radarSize/3.3333333
-                height: radarSize/3.333333
+                width: radarSize/(10/3)
+                height: radarSize/(10/3)
                 color: radarColour
                 radius: height/2
                 opacity: 0.4
@@ -172,7 +173,7 @@ Item {
                         width: detected ? detectedSize : normalSize
                         height: detected ? detectedSize : normalSize
                         radius: height/2
-                        color: model.connected ? "#495F94" : blipColour
+                        color: model.connected ? "#D58AB6" : blipColour
 
                         Component.onCompleted: {
 
@@ -205,7 +206,7 @@ Item {
                         // Random movement
                         Timer {
                             interval: 50
-                            running: true
+                            running: radar.active
                             repeat: true
 
                             onTriggered: {
@@ -246,7 +247,7 @@ Item {
                         // Blip increasing in size when hit by pulse
                         Timer {
                             interval: 30
-                            running: true
+                            running: radar.active
                             repeat: true
 
                             onTriggered: {
