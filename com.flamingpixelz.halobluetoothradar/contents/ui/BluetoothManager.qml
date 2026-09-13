@@ -7,6 +7,7 @@ Item {
     readonly property BluezQt.Manager manager: BluezQt.Manager
     property alias devicesModel: devicesModel
     readonly property bool bluetoothEnabled: manager.bluetoothOperational
+    readonly property bool discovering: manager.usableAdapter ? manager.usableAdapter.discovering : false
 
     // Turn BT on/off
     function toggleBt() {
@@ -36,6 +37,32 @@ Item {
         }
     }
 
+            function deviceForAddress(address) {
+            var adapter = manager.usableAdapter
+            return adapter ? adapter.deviceForAddress(address) : null
+        }
+
+        function connectDevice(address) {
+            var device = deviceForAddress(address)
+            if (device) device.connectToDevice()
+        }
+
+        function disconnectDevice(address) {
+            var device = deviceForAddress(address)
+            if (device) device.disconnectFromDevice()
+        }
+
+        function forgetDevice(address) {
+            var adapter = manager.usableAdapter
+            var device = deviceForAddress(address)
+            if (adapter && device) adapter.removeDevice(device)
+        }
+
+        function setDeviceAlias(address, alias) {
+            var device = deviceForAddress(address)
+            if (device) device.name = alias
+        }
+
     ListModel {
         id: devicesModel
     }
@@ -56,45 +83,70 @@ Item {
             address: device.address || "",
             name: device.name || device.address || "Unknown",
             rssi: (device.rssi !== undefined && device.rssi !== null) ? device.rssi : 0, // Signal strength
-            connected: device.connected === true
+            connected: device.connected === true,
+            paired: device.paired === true
         }
     }
+
+    function isRelevantDevice(device) {
+        return device.paired || (device.name !== undefined && device.name !== "")
+    }
+
+    function pairDevice(address) {
+    var device = deviceForAddress(address)
+    if (device) device.pair()
+}
+
+function pruneUnpairedDevices() {
+    for (var i = devicesModel.count - 1; i >= 0; i--) {
+        if (!devicesModel.get(i).paired) {
+            devicesModel.remove(i)
+        }
+    }
+}
+
+Connections {
+    target: root.manager.usableAdapter
+
+    function onDiscoveringChanged(discovering) {
+        if (!discovering) {
+            pruneUnpairedDevices()
+        }
+    }
+}
+    
 
     Connections {
         target: root.manager
 
-        // When becomes operational, clear model and repopulate it with every known device
         function onOperationalChanged() {
-
             if (root.manager.operational) {
                 devicesModel.clear()
-                for(var i = 0; i < root.manager.devices.length; i++) {
-                    devicesModel.append(deviceToEntry(root.manager.devices[i]))
+                for (var i = 0; i < root.manager.devices.length; i++) {
+                    if (isRelevantDevice(root.manager.devices[i])) {
+                        devicesModel.append(deviceToEntry(root.manager.devices[i]))
+                    }
                 }
             }
         }
 
-        // Adds new device only if it already isnt present
         function onDeviceAdded(device) {
-            if (indexOfDevice(device.address) === -1) {
+            if (isRelevantDevice(device) && indexOfDevice(device.address) === -1) {
                 devicesModel.append(deviceToEntry(device))
             }
         }
 
-        // Removes device
-        function onDeviceRemoved(device) {
-            var idx = indexOfDevice(device.address)
-            if(idx !== -1) devicesModel.remove(idx)
-        }
-
-        // Device updates
         function onDeviceChanged(device) {
-            var idx = indexOfDevice(device.address) 
-            var entry = deviceToEntry(device)
-            if(idx !== -1) {
-                devicesModel.set(idx, entry)
-            } else {
-                devicesModel.append(entry)
+            var idx = indexOfDevice(device.address)
+            if (isRelevantDevice(device)) {
+                var entry = deviceToEntry(device)
+                if (idx !== -1) {
+                    devicesModel.set(idx, entry)
+                } else {
+                    devicesModel.append(entry)
+                }
+            } else if (idx !== -1) {
+                devicesModel.remove(idx)
             }
         }
     }

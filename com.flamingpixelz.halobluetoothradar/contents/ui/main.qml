@@ -12,14 +12,6 @@ PlasmoidItem {
         id: bluetoothManager
     }
 
-    onExpandedChanged: {
-        if (root.expanded) {
-            bluetoothManager.startScan()
-        } else {
-            bluetoothManager.stopScan()
-        }
-    }
-
     compactRepresentation: Item {
         width: 32
         height: 32
@@ -46,7 +38,7 @@ PlasmoidItem {
 
     fullRepresentation: Item {
         Layout.minimumWidth: 300
-        Layout.minimumHeight: 200
+        Layout.minimumHeight: 340
 
         Rectangle {
             anchors.fill: parent
@@ -87,9 +79,45 @@ PlasmoidItem {
             }
         }
 
+        // Scan button
+        Rectangle {
+            id: scanButton
+            width: 60
+            height: 60
+            radius: 8
+            color: "transparent"
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: 8
+            visible: bluetoothManager.bluetoothEnabled
+            scale: scanMouseArea.pressed ? 0.92 : 1.0
+
+            Text {
+                anchors.centerIn: parent
+                text: bluetoothManager.discovering ? "Stop" : "Scan"
+                font.family: haloFont.name
+                color: "#e0d8ec"
+                font.pixelSize: 14
+            }
+
+            MouseArea {
+                id: scanMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: bluetoothManager.discovering ? bluetoothManager.stopScan() : bluetoothManager.startScan()
+            }
+
+            Behavior on scale {
+                NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
+            }
+        }
+
         Radar {
             id: radarDisplay
-            anchors.centerIn: parent
+            anchors.top: parent.top
+            anchors.topMargin: 70
+            anchors.horizontalCenter: parent.horizontalCenter
             width: 150
             height: 150
             devicesModel: bluetoothManager.devicesModel
@@ -97,17 +125,11 @@ PlasmoidItem {
             active: root.expanded && bluetoothManager.bluetoothEnabled
         }
 
-                DeviceList {
-            width: parent.width
-            height: 200
-            manager: bluetoothManager
-}
-
-
         Image {
             id: offImage
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -20
+            anchors.top: parent.top
+            anchors.topMargin: 60
+            anchors.horizontalCenter: parent.horizontalCenter
             width: 200
             height: 200
             source: "../assets/icons/fog-skull.png" 
@@ -119,19 +141,145 @@ PlasmoidItem {
         }
 
         Text {
-        anchors.top: offImage.bottom
-        anchors.topMargin: 8
-        anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: offImage.bottom
+            anchors.topMargin: 8
+            anchors.horizontalCenter: parent.horizontalCenter
 
-        text: "You'll miss those eyes in the back of your head"
-        font.family: haloFont.name
-        color: '#544970'
-        font.pixelSize: 18
-        visible: !bluetoothManager.bluetoothEnabled
-    }
+            text: "You'll miss those eyes in the back of your head"
+            font.family: haloFont.name
+            color: '#544970'
+            font.pixelSize: 18
+            visible: !bluetoothManager.bluetoothEnabled
+        }
 
-        
+        ListView {
+            id: deviceList
+            property string expandedAddress: ""
+            anchors.top: radarDisplay.bottom
+            anchors.topMargin: 12
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 8
+            clip: true
+            visible: bluetoothManager.bluetoothEnabled
+            model: bluetoothManager.devicesModel
 
+            delegate: Rectangle {
+                id: deviceDelegate
+                width: deviceList.width
+                color: "transparent"
+                clip: true
 
+                property bool expanded: deviceList.expandedAddress === model.address
+                property var liveDevice: expanded ? bluetoothManager.deviceForAddress(model.address) : null
+
+                height: headerRow.height + (expanded ? detailColumn.height + 12 : 0)
+
+                Behavior on height {
+                    NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+                }
+
+                Column {
+                    width: parent.width
+
+                    Item {
+                        id: headerRow
+                        width: parent.width
+                        height: 28
+
+                        RowLayout {
+                            anchors.fill: parent
+                            spacing: 8
+
+                            Rectangle {
+                                width: 8
+                                height: 8
+                                radius: 4
+                                color: model.connected ? "#D58AB6" : (model.paired ? "#8c2ca2" : "#544970")
+                            }
+
+                            Text {
+                                text: model.name
+                                color: "#e0d8ec"
+                                font.family: haloFont.name
+                                font.pixelSize: 13
+                                Layout.fillWidth: true
+                                elide: Text.ElideRight
+                            }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: deviceList.expandedAddress = deviceDelegate.expanded ? "" : model.address
+                        }
+                    }
+
+                    ColumnLayout {
+                        id: detailColumn
+                        width: parent.width
+                        visible: deviceDelegate.expanded
+                        spacing: 6
+
+                        Text {
+                            text: "MAC: " + model.address
+                            color: "#a495c2"
+                            font.pixelSize: 11
+                        }
+
+                        Text {
+                            text: "Battery: " + (deviceDelegate.liveDevice && deviceDelegate.liveDevice.battery
+                                ? deviceDelegate.liveDevice.battery.percentage + "%"
+                                : "—")
+                            color: "#a495c2"
+                            font.pixelSize: 11
+                        }
+
+                        RowLayout {
+                            spacing: 6
+
+                            TextField {
+                                id: aliasField
+                                Layout.fillWidth: true
+                                text: model.name
+                                placeholderText: "Alias"
+                            }
+
+                            Button {
+                                text: "Save"
+                                onClicked: bluetoothManager.setDeviceAlias(model.address, aliasField.text)
+                            }
+                        }
+
+                        RowLayout {
+                            spacing: 6
+
+                            Button {
+                                visible: !model.paired
+                                text: "Pair"
+                                onClicked: bluetoothManager.pairDevice(model.address)
+                            }
+
+                            Button {
+                                visible: model.paired
+                                text: model.connected ? "Disconnect" : "Connect"
+                                onClicked: model.connected
+                                    ? bluetoothManager.disconnectDevice(model.address)
+                                    : bluetoothManager.connectDevice(model.address)
+                            }
+
+                            Button {
+                                visible: model.paired
+                                text: "Forget"
+                                onClicked: {
+                                    deviceList.expandedAddress = ""
+                                    bluetoothManager.forgetDevice(model.address)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
