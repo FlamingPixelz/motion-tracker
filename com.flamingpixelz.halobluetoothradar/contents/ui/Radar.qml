@@ -36,7 +36,16 @@ Item {
 
                 // Wedge
                 Canvas {
+                    id: wedgeCanvas
                     anchors.fill: parent
+
+                    Connections {
+                        target: radar
+                        function onRadarColourChanged() {
+                            wedgeCanvas.requestPaint()
+                        }
+                    }
+
                     onPaint: {
                         var ctx = getContext("2d")
                         ctx.reset()

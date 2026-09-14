@@ -89,6 +89,8 @@ PlasmoidItem {
             devicesModel: bluetoothManager.devicesModel
             visible: bluetoothManager.bluetoothEnabled
             active: root.expanded && bluetoothManager.bluetoothEnabled
+            radarColour: bluetoothManager.discovering ? "#495F94" : "#8c2ca2"
+            scale: scanMouseArea.pressed ? 0.92 : 1.0
 
             // Start scan
             MouseArea {
@@ -98,7 +100,14 @@ PlasmoidItem {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: bluetoothManager.discovering ? bluetoothManager.stopScan() : bluetoothManager.startScan()
             }
+
+            Behavior on scale {
+                NumberAnimation {
+                    duration: 100
+                    easing.type: Easing.InOutQuad
+                }
         }
+    }
 
         Image {
             id: offImage
@@ -171,7 +180,7 @@ PlasmoidItem {
                                 width: 8
                                 height: 8
                                 radius: 4
-                                color: model.connected ? "#D58AB6" : (model.paired ? "#8c2ca2" : "#544970")
+                                color: model.connected ? "#D58AB6" : (model.paired ? "#DA3E62" : "#544970")
                             }
 
                             Text {
