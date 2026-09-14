@@ -56,11 +56,13 @@ PlasmoidItem {
 
             Image {
                 anchors.centerIn: parent
-                width: 40
-                height: 40
+                width: 200
+                height: 200
                 source: bluetoothManager.bluetoothEnabled ? "../assets/icons/fog-off.svg": "../assets/icons/fog-on.svg" 
+                sourceSize.width: width
+                sourceSize.height: height
                 fillMode: Image.PreserveAspectFit
-                mipmap: false
+                smooth: true
             }
 
             MouseArea {
