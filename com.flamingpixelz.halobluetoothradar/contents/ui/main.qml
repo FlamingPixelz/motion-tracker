@@ -37,8 +37,8 @@ PlasmoidItem {
 
 
     fullRepresentation: Item {
-        Layout.minimumWidth: 550
-        Layout.minimumHeight: 300
+        Layout.minimumWidth: 500
+        Layout.minimumHeight: 200
 
         Rectangle {
             anchors.fill: parent
@@ -93,7 +93,7 @@ PlasmoidItem {
             visible: bluetoothManager.bluetoothEnabled
             active: root.expanded && bluetoothManager.bluetoothEnabled
             radarColour: bluetoothManager.discovering ? "#495F94" : "#8c2ca2"
-            scale: scanMouseArea.pressed ? 0.92 : 1.0
+            scale: scanMouseArea.pressed ? 1.15 : 1.2
 
             // Start scan
             MouseArea {
@@ -139,11 +139,22 @@ PlasmoidItem {
             visible: !bluetoothManager.bluetoothEnabled
         }
 
+        Text {
+            anchors.bottom: deviceList.top
+            anchors.bottomMargin: 5
+            anchors.left: deviceList.left
+            text: "Contacts"
+            font.pixelSize: 18
+            font.underline: true
+            font.family: haloFont.name
+            color: '#544970'
+            visible: bluetoothManager.bluetoothEnabled
+        }
+
         ListView {
             id: deviceList
             property string expandedAddress: ""
-            anchors.top: parent.top
-            anchors.topMargin: 30
+            anchors.top: radarDisplay.top
             anchors.left: radarDisplay.right
             anchors.leftMargin: 60
             anchors.right: parent.right
@@ -230,6 +241,7 @@ PlasmoidItem {
                                 id: aliasField
                                 Layout.fillWidth: true
                                 text: model.name
+                                font.pixelSize: 13
                                 placeholderText: "Alias"
                             }
 
