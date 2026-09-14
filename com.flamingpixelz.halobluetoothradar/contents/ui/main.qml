@@ -79,40 +79,6 @@ PlasmoidItem {
             }
         }
 
-        // Scan button
-        Rectangle {
-            id: scanButton
-            width: 60
-            height: 60
-            radius: 8
-            color: "transparent"
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.margins: 8
-            visible: bluetoothManager.bluetoothEnabled
-            scale: scanMouseArea.pressed ? 0.92 : 1.0
-
-            Text {
-                anchors.centerIn: parent
-                text: bluetoothManager.discovering ? "Stop" : "Scan"
-                font.family: haloFont.name
-                color: "#e0d8ec"
-                font.pixelSize: 14
-            }
-
-            MouseArea {
-                id: scanMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-                onClicked: bluetoothManager.discovering ? bluetoothManager.stopScan() : bluetoothManager.startScan()
-            }
-
-            Behavior on scale {
-                NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
-            }
-        }
-
         Radar {
             id: radarDisplay
             anchors.top: parent.top
@@ -123,6 +89,15 @@ PlasmoidItem {
             devicesModel: bluetoothManager.devicesModel
             visible: bluetoothManager.bluetoothEnabled
             active: root.expanded && bluetoothManager.bluetoothEnabled
+
+            // Start scan
+            MouseArea {
+                id: scanMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: bluetoothManager.discovering ? bluetoothManager.stopScan() : bluetoothManager.startScan()
+            }
         }
 
         Image {
