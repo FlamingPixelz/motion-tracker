@@ -37,8 +37,8 @@ PlasmoidItem {
 
 
     fullRepresentation: Item {
-        Layout.minimumWidth: 300
-        Layout.minimumHeight: 340
+        Layout.minimumWidth: 550
+        Layout.minimumHeight: 300
 
         Rectangle {
             anchors.fill: parent
@@ -82,8 +82,9 @@ PlasmoidItem {
         Radar {
             id: radarDisplay
             anchors.top: parent.top
-            anchors.topMargin: 70
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 100
+            anchors.left: parent.left
+            anchors.leftMargin: 40
             width: 150
             height: 150
             devicesModel: bluetoothManager.devicesModel
@@ -139,9 +140,10 @@ PlasmoidItem {
         ListView {
             id: deviceList
             property string expandedAddress: ""
-            anchors.top: radarDisplay.bottom
-            anchors.topMargin: 12
-            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.topMargin: 30
+            anchors.left: radarDisplay.right
+            anchors.leftMargin: 60
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.margins: 8
