@@ -37,7 +37,7 @@ PlasmoidItem {
 
 
     fullRepresentation: Item {
-        Layout.minimumWidth: 500
+        Layout.minimumWidth: 450
         Layout.minimumHeight: 200
 
         Rectangle {
@@ -52,7 +52,7 @@ PlasmoidItem {
             height: 60
             radius: 8
             color: "transparent"
-            scale: mouseArea.pressed ? 0.92 : 1.0
+            scale: mouseArea.pressed ? 1.02 : 1.1
 
             Image {
                 anchors.centerIn: parent
@@ -84,7 +84,7 @@ PlasmoidItem {
         Radar {
             id: radarDisplay
             anchors.top: parent.top
-            anchors.topMargin: 80
+            anchors.topMargin: 60
             anchors.left: parent.left
             anchors.leftMargin: 20
             width: 150

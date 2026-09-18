@@ -53,17 +53,17 @@ import QtQuick.Shapes
                                 startX: 2;  startY: 32
                                 PathLine { x: 7; y: 10 }
                                 PathQuad { controlX: 8; controlY: 4; x: 14; y: 4 }
-                                PathLine { x: 279; y: 4 }
-                                PathQuad { controlX: 285; controlY: 4; x: 283; y: 10 }
-                                PathLine { x: 275; y: 32 }
+                                PathLine { x: 289; y: 4 }
+                                PathQuad { controlX: 301; controlY: 4; x: 298; y: 10 }
+                                PathLine { x: 290; y: 32 }
                                 PathLine { x: 2; y: 32 }
                                 
                             }
                             Rectangle {
                                 anchors.left: parent.left
-                                anchors.leftMargin: 10
+                                anchors.leftMargin: 11
                                 anchors.top: parent.top
-                                anchors.topMargin: 14
+                                anchors.topMargin: 14.5
                                 width: 6
                                 height: 6
                                 radius: 3.5
@@ -73,7 +73,7 @@ import QtQuick.Shapes
                             Text {
                                 text: model.name
                                 anchors.left: parent.left
-                                anchors.leftMargin: 20
+                                anchors.leftMargin: 21
                                 anchors.top: parent.top
                                 anchors.topMargin: 10
                                 color: "#e0d8ec"
