@@ -84,16 +84,16 @@ PlasmoidItem {
         Radar {
             id: radarDisplay
             anchors.top: parent.top
-            anchors.topMargin: 100
+            anchors.topMargin: 80
             anchors.left: parent.left
-            anchors.leftMargin: 40
+            anchors.leftMargin: 20
             width: 150
             height: 150
             devicesModel: bluetoothManager.devicesModel
             visible: bluetoothManager.bluetoothEnabled
             active: root.expanded && bluetoothManager.bluetoothEnabled
             radarColour: bluetoothManager.discovering ? "#495F94" : "#8c2ca2"
-            scale: scanMouseArea.pressed ? 1.15 : 1.2
+            scale: scanMouseArea.pressed ? 0.95 : 1.0
 
             // Start scan
             MouseArea {
@@ -141,145 +141,27 @@ PlasmoidItem {
 
         Text {
             anchors.bottom: deviceList.top
-            anchors.bottomMargin: 5
             anchors.left: deviceList.left
             text: "Contacts"
-            font.pixelSize: 18
+            font.pixelSize: 15
             font.underline: true
             font.family: haloFont.name
             color: '#544970'
             visible: bluetoothManager.bluetoothEnabled
         }
 
-        ListView {
+        DeviceList {
             id: deviceList
-            property string expandedAddress: ""
             anchors.top: radarDisplay.top
             anchors.left: radarDisplay.right
-            anchors.leftMargin: 60
+            anchors.leftMargin: 30
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.margins: 8
-            clip: true
             visible: bluetoothManager.bluetoothEnabled
-            model: bluetoothManager.devicesModel
 
-            delegate: Rectangle {
-                id: deviceDelegate
-                width: deviceList.width
-                color: "transparent"
-                clip: true
-
-                property bool expanded: deviceList.expandedAddress === model.address
-                property var liveDevice: expanded ? bluetoothManager.deviceForAddress(model.address) : null
-
-                height: headerRow.height + (expanded ? detailColumn.height + 12 : 0)
-
-                Behavior on height {
-                    NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
-                }
-
-                Column {
-                    width: parent.width
-
-                    Item {
-                        id: headerRow
-                        width: parent.width
-                        height: 28
-
-                        RowLayout {
-                            anchors.fill: parent
-                            spacing: 8
-
-                            Rectangle {
-                                width: 8
-                                height: 8
-                                radius: 4
-                                color: model.connected ? "#D58AB6" : (model.paired ? "#DA3E62" : "#544970")
-                            }
-
-                            Text {
-                                text: model.name
-                                color: "#e0d8ec"
-                                font.family: haloFont.name
-                                font.pixelSize: 13
-                                Layout.fillWidth: true
-                                elide: Text.ElideRight
-                            }
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: deviceList.expandedAddress = deviceDelegate.expanded ? "" : model.address
-                        }
-                    }
-
-                    ColumnLayout {
-                        id: detailColumn
-                        width: parent.width
-                        visible: deviceDelegate.expanded
-                        spacing: 6
-
-                        Text {
-                            text: "MAC: " + model.address
-                            color: "#a495c2"
-                            font.pixelSize: 11
-                        }
-
-                        Text {
-                            text: "Battery: " + (deviceDelegate.liveDevice && deviceDelegate.liveDevice.battery
-                                ? deviceDelegate.liveDevice.battery.percentage + "%"
-                                : "—")
-                            color: "#a495c2"
-                            font.pixelSize: 11
-                        }
-
-                        RowLayout {
-                            spacing: 6
-
-                            TextField {
-                                id: aliasField
-                                Layout.fillWidth: true
-                                text: model.name
-                                font.pixelSize: 13
-                                placeholderText: "Alias"
-                            }
-
-                            Button {
-                                text: "Save"
-                                onClicked: bluetoothManager.setDeviceAlias(model.address, aliasField.text)
-                            }
-                        }
-
-                        RowLayout {
-                            spacing: 6
-
-                            Button {
-                                visible: !model.paired
-                                text: "Pair"
-                                onClicked: bluetoothManager.pairDevice(model.address)
-                            }
-
-                            Button {
-                                visible: model.paired
-                                text: model.connected ? "Disconnect" : "Connect"
-                                onClicked: model.connected
-                                    ? bluetoothManager.disconnectDevice(model.address)
-                                    : bluetoothManager.connectDevice(model.address)
-                            }
-
-                            Button {
-                                visible: model.paired
-                                text: "Forget"
-                                onClicked: {
-                                    deviceList.expandedAddress = ""
-                                    bluetoothManager.forgetDevice(model.address)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+            btManager: bluetoothManager
+            fontFamily: haloFont.name
+}
     }
 }

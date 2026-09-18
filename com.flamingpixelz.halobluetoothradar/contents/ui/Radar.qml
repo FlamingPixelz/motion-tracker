@@ -4,6 +4,7 @@ Item {
     id: radar
     property string radarColour: '#8c2ca2'
     property string blipColour: "#DA3E62"
+    property string connectedBlip: "#D58AB6"
     property real radarSize: 150
     property var devicesModel: null
     property bool active: true
@@ -182,7 +183,7 @@ Item {
                         width: detected ? detectedSize : normalSize
                         height: detected ? detectedSize : normalSize
                         radius: height/2
-                        color: model.connected ? "#D58AB6" : blipColour
+                        color: model.connected ? connectedBlip : blipColour
 
                         Component.onCompleted: {
 
@@ -230,7 +231,7 @@ Item {
 
                                 var centreX = radarSize/2
                                 var centreY = radarSize/2
-                                var maxRadius = 65
+                                var maxRadius = radarSize/2 - 10
 
                                 var dx = newX - centreX
                                 var dy = newY - centreY
