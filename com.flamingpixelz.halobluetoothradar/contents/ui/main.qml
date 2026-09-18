@@ -142,6 +142,7 @@ PlasmoidItem {
         Text {
             anchors.bottom: deviceList.top
             anchors.left: deviceList.left
+            anchors.bottomMargin: 10
             text: "Contacts"
             font.pixelSize: 15
             font.underline: true

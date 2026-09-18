@@ -48,13 +48,15 @@ import QtQuick.Shapes
                             ShapePath {
                                 strokeWidth: 2
                                 strokeColor: "#544970"
-                                fillColor: "transparent"
+                                fillColor: colourChange.containsMouse ? '#1b152a' : "transparent"
 
-                                startX: 0;  startY: 32
-                                PathLine { x: 8; y: 4 }
-                                PathLine { x: 285; y: 4 }
+                                startX: 2;  startY: 32
+                                PathLine { x: 7; y: 10 }
+                                PathQuad { controlX: 8; controlY: 4; x: 14; y: 4 }
+                                PathLine { x: 279; y: 4 }
+                                PathQuad { controlX: 285; controlY: 4; x: 283; y: 10 }
                                 PathLine { x: 275; y: 32 }
-                                PathLine { x: 0; y: 32 }
+                                PathLine { x: 2; y: 32 }
                                 
                             }
                             Rectangle {
@@ -79,6 +81,12 @@ import QtQuick.Shapes
                                 font.pixelSize: 12
                                 Layout.fillWidth: true
                                 elide: Text.ElideRight
+                            }
+
+                            MouseArea {
+                                id: colourChange
+                                anchors.fill: parent
+                                hoverEnabled: true
                             }
                         }       
                         }
