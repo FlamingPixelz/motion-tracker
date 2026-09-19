@@ -95,6 +95,7 @@ Item {
     function pairDevice(address) {
     var device = deviceForAddress(address)
     if (device) device.pair()
+    device.connectToDevice()
 }
 
 function pruneUnpairedDevices() {

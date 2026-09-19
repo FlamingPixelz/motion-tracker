@@ -48,8 +48,8 @@ import QtQuick.Shapes
 
                             ShapePath {
                                 strokeWidth: 2
-                                strokeColor: "#544970"
                                 fillColor: colourChange.containsMouse ? '#1b152a' : "transparent"
+                                strokeColor: "#544970"
 
                                 startX: 2;  startY: 32
                                 PathLine { x: 7; y: 10 }
@@ -110,11 +110,11 @@ import QtQuick.Shapes
                             Image {
                                 id: connectBtn
                                 anchors.top: parent.top
-                                anchors.topMargin: 2
+                                anchors.topMargin: 4
                                 anchors.right: parent.right
                                 anchors.rightMargin: 10
-                                width: 30
-                                height: 30
+                                width: 25
+                                height: 25
                                 mipmap: false
                                 smooth: true
                                 visible: !model.connected && model.paired
@@ -131,6 +131,30 @@ import QtQuick.Shapes
                                 }
 
                             }
+                            Image {
+                                id: pairBtn
+                                anchors.top: parent.top
+                                anchors.topMargin: 5
+                                anchors.right: parent.right
+                                anchors.rightMargin: 10
+                                width: 25
+                                height: 25
+                                mipmap: false
+                                smooth: true
+                                source: pairHover.containsMouse ? "../assets/icons/pair-hover.svg": "../assets/icons/pair.svg"
+                                scale: pairHover.containsMouse ? 1.05 : 1.0
+                                visible: !model.connected && !model.paired
+                                z: 1
+
+                                MouseArea {
+                                    id: pairHover
+                                    anchors.fill: pairBtn
+                                    cursorShape: Qt.PointingHandCursor
+                                    hoverEnabled: true
+                                    onClicked: btManager.pairDevice(model.address)
+                                }
+
+                            }                            
 
                             Image {
                                 id: disconnectBtn
