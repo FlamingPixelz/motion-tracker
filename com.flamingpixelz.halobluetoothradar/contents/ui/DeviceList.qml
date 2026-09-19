@@ -108,6 +108,31 @@ import QtQuick.Shapes
                             }
 
                             Image {
+                                id: connectBtn
+                                anchors.top: parent.top
+                                anchors.topMargin: 2
+                                anchors.right: parent.right
+                                anchors.rightMargin: 10
+                                width: 30
+                                height: 30
+                                mipmap: false
+                                smooth: true
+                                visible: !model.connected && model.paired
+                                source: connectHover.containsMouse ? "../assets/icons/connect-hover.svg": "../assets/icons/connect.svg"
+                                scale: connectHover.containsMouse ? 1.05 : 1.0
+                                z: 1
+
+                                MouseArea {
+                                    id: connectHover
+                                    anchors.fill: connectBtn
+                                    cursorShape: Qt.PointingHandCursor
+                                    hoverEnabled: true
+                                    onClicked: btManager.connectDevice(model.address)
+                                }
+
+                            }
+
+                            Image {
                                 id: disconnectBtn
                                 anchors.top: parent.top
                                 anchors.topMargin: 2
