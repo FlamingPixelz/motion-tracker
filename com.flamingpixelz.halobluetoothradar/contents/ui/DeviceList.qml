@@ -10,6 +10,26 @@ import QtQuick.Shapes
             clip: true
             model: btManager ? btManager.devicesModel : null
 
+            section.property: "connected"
+            section.delegate: Item {
+                required property string section
+                width: root.width
+                height: 30
+
+                Text {
+                    text: section === "true" ? "Allies" : "Contacts"
+                    color: '#544970'
+                    font.family: root.fontFamily
+                    font.underline: true
+                    font.pixelSize: 15
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 8
+
+                }
+            }
+
             delegate: Rectangle {
                 
                 id: deviceDelegate
@@ -119,7 +139,7 @@ import QtQuick.Shapes
                                 smooth: true
                                 visible: !model.connected && model.paired
                                 source: connectHover.containsMouse ? "../assets/icons/connect-hover.svg": "../assets/icons/connect.svg"
-                                scale: connectHover.containsMouse ? 1.05 : 1.0
+                                scale: connectHover.containsMouse ? 1.1 : 1.0
                                 z: 1
 
                                 MouseArea {
@@ -142,7 +162,7 @@ import QtQuick.Shapes
                                 mipmap: false
                                 smooth: true
                                 source: pairHover.containsMouse ? "../assets/icons/pair-hover.svg": "../assets/icons/pair.svg"
-                                scale: pairHover.containsMouse ? 1.05 : 1.0
+                                scale: pairHover.containsMouse ? 1.1 : 1.0
                                 visible: !model.connected && !model.paired
                                 z: 1
 

@@ -63,6 +63,11 @@ Item {
             if (device) device.name = alias
         }
 
+        function addEntry(entry) {
+            if (entry.connected) devicesModel.insert(0, entry)
+            else devicesModel.append(entry)
+        }
+
         
 
     ListModel {
@@ -133,7 +138,7 @@ Connections {
                 devicesModel.clear()
                 for (var i = 0; i < root.manager.devices.length; i++) {
                     if (isRelevantDevice(root.manager.devices[i])) {
-                        devicesModel.append(deviceToEntry(root.manager.devices[i]))
+                        addEntry(deviceToEntry(root.manager.devices[i]))
                     }
                 }
             }
@@ -141,7 +146,7 @@ Connections {
 
         function onDeviceAdded(device) {
             if (isRelevantDevice(device) && indexOfDevice(device.address) === -1) {
-                devicesModel.append(deviceToEntry(device))
+                addEntry(deviceToEntry(device))
             }
         }
 
@@ -150,9 +155,13 @@ Connections {
             if (isRelevantDevice(device)) {
                 var entry = deviceToEntry(device)
                 if (idx !== -1) {
+                    var wasConnected = devicesModel.get(idx).connected
                     devicesModel.set(idx, entry)
+                    if (entry.connected !== wasConnected) {
+                        devicesModel.move(idx, entry.connected ? 0 : devicesModel.count - 1, 1)
+                    }
                 } else {
-                    devicesModel.append(entry)
+                    addEntry(entry)
                 }
             } else if (idx !== -1) {
                 devicesModel.remove(idx)

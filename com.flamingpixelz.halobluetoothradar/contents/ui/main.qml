@@ -140,26 +140,14 @@ PlasmoidItem {
             visible: !bluetoothManager.bluetoothEnabled
         }
 
-        Text {
-            anchors.bottom: deviceList.top
-            anchors.left: deviceList.left
-            anchors.bottomMargin: 10
-            text: "Contacts"
-            font.pixelSize: 15
-            font.underline: true
-            font.family: haloFont.name
-            color: '#544970'
-            visible: bluetoothManager.bluetoothEnabled
-        }
-
         DeviceList {
             id: deviceList
-            anchors.top: radarDisplay.top
+            anchors.top: parent.top
+            anchors.topMargin: 50
             anchors.left: radarDisplay.right
             anchors.leftMargin: 30
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            anchors.margins: 8
             visible: bluetoothManager.bluetoothEnabled
 
             btManager: bluetoothManager
