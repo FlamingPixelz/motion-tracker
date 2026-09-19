@@ -63,6 +63,8 @@ Item {
             if (device) device.name = alias
         }
 
+        
+
     ListModel {
         id: devicesModel
     }
@@ -87,9 +89,15 @@ Item {
             paired: device.paired === true
         }
     }
+    
+    function filterBtDevice(device) {
+        var name = device.name
+        if(!name) return false
+        return name.replace(/-/g, ":").toUpperCase() !== device.address.toUpperCase() // Convert to proper mac address format
+    }
 
     function isRelevantDevice(device) {
-        return device.paired || (device.name !== undefined && device.name !== "")
+        return device.paired || filterBtDevice(device)
     }
 
     function pairDevice(address) {
