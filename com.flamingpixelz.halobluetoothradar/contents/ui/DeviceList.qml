@@ -83,6 +83,19 @@ import QtQuick.Shapes
                                 elide: Text.ElideRight
                             }
 
+                            Image {
+                                id: battery
+                                anchors.top: parent.top
+                                anchors.topMargin: 0
+                                anchors.right: parent.right
+                                anchors.rightMargin: 20
+                                source: "../assets/icons/battery.svg" 
+                                width: 35
+                                height: 35
+                                mipmap: false
+                                smooth: true
+                            }
+
                             MouseArea {
                                 id: colourChange
                                 anchors.fill: parent

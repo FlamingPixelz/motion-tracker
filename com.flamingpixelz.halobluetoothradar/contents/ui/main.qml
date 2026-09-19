@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
 import QtQuick.Controls
+import QtQuick.Effects
 
 PlasmoidItem {
     id: root
@@ -163,6 +164,6 @@ PlasmoidItem {
 
             btManager: bluetoothManager
             fontFamily: haloFont.name
-}
+        }
     }
 }
