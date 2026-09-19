@@ -18,7 +18,8 @@ import QtQuick.Shapes
                 clip: true
 
                 property bool expanded: root.expandedAddress === model.address
-                property var liveDevice: expanded ? btManager.deviceForAddress(model.address) : null
+                property var liveDevice: (expanded || model.connected) ? btManager.deviceForAddress(model.address) : null
+                property int batteryPercentage: (liveDevice && liveDevice.battery) ? liveDevice.battery.percentage: -1
 
                 height: headerRow.height + (expanded ? detailColumn.height + 12 : 0)
 
@@ -84,7 +85,7 @@ import QtQuick.Shapes
                             }
 
                             Image {
-                                id: battery
+                                id: batteryImage
                                 anchors.top: parent.top
                                 anchors.topMargin: 0
                                 anchors.right: parent.right
@@ -94,6 +95,16 @@ import QtQuick.Shapes
                                 height: 35
                                 mipmap: false
                                 smooth: true
+                                visible: model.connected && batteryPercentage >= 0
+
+                                Text {
+                                    visible: batteryImage.visible
+                                    text: batteryPercentage
+                                    anchors.centerIn: parent
+                                    font.pixelSize: 8
+                                    font.family: root.fontFamily
+                                    color: "#e0d8ec"
+                                }
                             }
 
                             MouseArea {
