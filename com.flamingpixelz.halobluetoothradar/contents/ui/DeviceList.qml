@@ -127,6 +127,7 @@ import QtQuick.Shapes
                                     anchors.fill: disconnectBtn
                                     cursorShape: Qt.PointingHandCursor
                                     hoverEnabled: true
+                                    onClicked: btManager.disconnectDevice(model.address)
                                 }
 
                                 Behavior on scale {
