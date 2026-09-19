@@ -89,7 +89,7 @@ import QtQuick.Shapes
                                 anchors.top: parent.top
                                 anchors.topMargin: 0
                                 anchors.right: parent.right
-                                anchors.rightMargin: 20
+                                anchors.rightMargin: 45
                                 source: "../assets/icons/battery.svg" 
                                 width: 35
                                 height: 35
@@ -104,6 +104,37 @@ import QtQuick.Shapes
                                     font.pixelSize: 8
                                     font.family: root.fontFamily
                                     color: "#e0d8ec"
+                                }
+                            }
+
+                            Image {
+                                id: disconnectBtn
+                                anchors.top: parent.top
+                                anchors.topMargin: 2
+                                anchors.right: parent.right
+                                anchors.rightMargin: 10
+                                width: 30
+                                height: 30
+                                mipmap: false
+                                smooth: true
+                                source: disconnectHover.containsMouse ? "../assets/icons/disconnect-br-hover.svg": "../assets/icons/disconnect-br.svg"
+                                scale: disconnectHover.containsMouse ? 1.05 : 1.0
+                                visible: model.connected
+                                z: 1
+
+                                MouseArea {
+                                    id: disconnectHover
+                                    anchors.fill: disconnectBtn
+                                    cursorShape: Qt.PointingHandCursor
+                                    hoverEnabled: true
+                                }
+
+                                Behavior on scale {
+
+                                    NumberAnimation{
+                                        duration: 100
+                                        easing.type: Easing.InOutQuad 
+                                    }
                                 }
                             }
 
