@@ -10,26 +10,6 @@ import QtQuick.Shapes
             clip: true
             model: btManager ? btManager.devicesModel : null
 
-            section.property: "group"
-            section.delegate: Item {
-                required property string section
-                width: root.width
-                height: 30
-
-                Text {
-                    text: section === "allies" ? "Allies" : (section === "contacts" ? "Contacts": "Nearby")
-                    color: '#544970'
-                    font.family: root.fontFamily
-                    font.underline: true
-                    font.pixelSize: 15
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 8
-
-                }
-            }
-
             delegate: Rectangle {
                 
                 id: deviceDelegate
@@ -37,11 +17,18 @@ import QtQuick.Shapes
                 color: "transparent"
                 clip: true
 
+                
+                property bool checkGroup: {
+                    if (index <= 0) return true
+                    var previous = root.model.get(index-1)
+                    return !previous || previous.group !== model.group
+                }
+
                 property bool expanded: root.expandedAddress === model.address
                 property var liveDevice: (expanded || model.connected) ? btManager.deviceForAddress(model.address) : null
                 property int batteryPercentage: (liveDevice && liveDevice.battery) ? liveDevice.battery.percentage: -1
 
-                height: headerRow.height + (expanded ? detailColumn.height + 12 : 0)
+                height: (checkGroup ? 30: 0) + headerRow.height + (expanded ? detailColumn.height + 12 : 0)
 
                 Behavior on height {
                     NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
@@ -49,6 +36,27 @@ import QtQuick.Shapes
 
                 Column {
                     width: parent.width
+
+                Item {
+                visible: deviceDelegate.checkGroup
+                width: parent.width
+                height: visible ? 30 : 0
+
+
+                    Text {
+                        text: model.group === "allies" ? "Allies" : (model.group === "contacts" ? "Contacts": "Nearby")
+                        color: '#544970'
+                        font.family: root.fontFamily
+                        font.underline: true
+                        font.pixelSize: 15
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.topMargin: 10
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 8
+
+                }
+            }                    
 
                     Item {
                         id: headerRow
