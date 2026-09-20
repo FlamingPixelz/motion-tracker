@@ -258,12 +258,17 @@ import QtQuick.Controls
                                 anchors.topMargin: 25
                                 anchors.left: parent.left
                                 anchors.leftMargin: 5
+                                width: 230
                                 placeholderText: "Alias"
                                 font.family: root.fontFamily
+                                // Press Enter 
+                                onAccepted: {
+                                    if(text.trim() !== "") {
+                                        btManager.setDeviceAlias(model.address, text.trim())
+                                    }
+                                }
 
                                 background: Rectangle {
-                                    implicitHeight: 10
-                                    implicitWidth: 300
                                     color: aliasInput.enabled ? "transparent" : "#353637"
                                     border.color: aliasInput.enabled ? "#544970" : "transparent"
                                 }
@@ -285,7 +290,11 @@ import QtQuick.Controls
                                         anchors.fill: submitAlias
                                         hoverEnabled: true
                                         cursorShape: Qt.PointingHandCursor
-
+                                        onClicked: {
+                                            if(aliasInput.text.trim() !== "") {
+                                                btManager.setDeviceAlias(model.address, aliasInput.text.trim()) 
+                                            }  
+                                        } 
 
                                     }
                                 }
