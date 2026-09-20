@@ -236,7 +236,7 @@ import QtQuick.Controls
 
                         Item {
                             width: parent.width
-                            height: 120
+                            height: 110
 
                             Text {
                                 visible: model.typeName !== ""
@@ -319,7 +319,7 @@ import QtQuick.Controls
                                 height: 40
                                 mipmap: false
                                 source: model.blocked ? "../assets/icons/killjoy-activated.svg" : "../assets/icons/killjoy.svg"
-                                scale: activateBlock.containsMouse ? 1.05 : 1.0
+                                scale: activateBlock.containsMouse ? 1.1 : 1.0
 
                                 MouseArea {
                                     id: activateBlock
@@ -335,13 +335,13 @@ import QtQuick.Controls
                                 visible: model.paired
                                 anchors.top: parent.top
                                 anchors.left: parent.left
-                                anchors.leftMargin: 5
-                                anchors.topMargin: 100
+                                anchors.leftMargin: 50
+                                anchors.topMargin: 80
                                 width: 40
                                 height: 40
                                 mipmap: false
-                                source: forgetHover.containsMouse ? "../assets/icons/forget-hover.svg" : "../assets/icons/forget"
-                                scale: forgetHover.containsMouse ? 1.05 : 1.0
+                                source: forgetHover.containsMouse ? "../assets/icons/forget-hover.svg" : "../assets/icons/forget.svg"
+                                scale: forgetHover.containsMouse ? 1.1 : 1.0
 
                                 MouseArea {
                                     id: forgetHover
@@ -352,23 +352,28 @@ import QtQuick.Controls
                                         root.expandedAddress = ""
                                         btManager.forgetDevice(model.address)
                                     }
-
-
                                 }
                             }
 
-                            Switch {
-                                text: "Trusted"
-                                font.family: root.fontFamily
+                            Image {
+                                id: trustBtn
+                                visible: model.paired
                                 anchors.top: parent.top
                                 anchors.left: parent.left
-                                font.pixelSize: 12
                                 anchors.leftMargin: 5
                                 anchors.topMargin: 80
-                                checked: model.trusted
-                                onToggled : {
-                                    btManager.setTrusted(model.address, checked)
-                                    checked = Qt.binding(function() { return model.trusted })
+                                width: 40
+                                height: 40
+                                mipmap: false
+                                source: model.trusted ? "../assets/icons/trust-activated.svg" : "../assets/icons/trust.svg"
+                                scale: trustActivate.containsMouse ? 1.1 : 1.0
+
+                                MouseArea {
+                                    id: trustActivate
+                                    anchors.fill: trustBtn
+                                    cursorShape: Qt.PointingHandCursor
+                                    hoverEnabled: true
+                                    onClicked: btManager.setTrusted(model.address, !model.trusted)
                                 }
                             }
                         }
