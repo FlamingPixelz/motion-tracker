@@ -76,6 +76,11 @@ Item {
             if(device) device.trusted = value
         } 
 
+        function blockDevice(address, value) {
+            var device = deviceForAddress(address)
+            if(device) device.blocked = value
+        }
+
         function addEntry(entry) {
             if(entry.group === "allies") {
                 devicesModel.insert(0, entry)

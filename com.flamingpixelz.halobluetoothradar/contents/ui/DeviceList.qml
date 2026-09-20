@@ -236,7 +236,7 @@ import QtQuick.Controls
 
                         Item {
                             width: parent.width
-                            height: 90
+                            height: 120
 
                             Text {
                                 visible: model.typeName !== ""
@@ -274,7 +274,7 @@ import QtQuick.Controls
                                 }
 
                                 Image {
-                                    id: submitAlias
+                                    id: resetAlias
                                     anchors.top: parent.top
                                     anchors.topMargin: 1
                                     anchors.right: parent.right
@@ -287,7 +287,7 @@ import QtQuick.Controls
 
                                     MouseArea {
                                         id: aliasHover
-                                        anchors.fill: submitAlias
+                                        anchors.fill: resetAlias
                                         hoverEnabled: true
                                         cursorShape: Qt.PointingHandCursor
                                         onClicked: btManager.resetAlias(model.address)
@@ -310,12 +310,33 @@ import QtQuick.Controls
                             }
 
                             Image {
+                                id: blockBtn
+                                anchors.top: parent.top
+                                anchors.left: parent.left
+                                anchors.leftMargin: 250
+                                anchors.topMargin: 20
+                                width: 40
+                                height: 40
+                                mipmap: false
+                                source: model.blocked ? "../assets/icons/killjoy-activated.svg" : "../assets/icons/killjoy.svg"
+                                scale: activateBlock.containsMouse ? 1.05 : 1.0
+
+                                MouseArea {
+                                    id: activateBlock
+                                    anchors.fill: blockBtn
+                                    cursorShape: Qt.PointingHandCursor
+                                    hoverEnabled: true
+                                    onClicked: btManager.blockDevice(model.address, !model.blocked)
+                                }
+                            }
+
+                            Image {
                                 id: forgetBtn
                                 visible: model.paired
                                 anchors.top: parent.top
                                 anchors.left: parent.left
-                                anchors.leftMargin: 255
-                                anchors.topMargin: 5
+                                anchors.leftMargin: 5
+                                anchors.topMargin: 100
                                 width: 40
                                 height: 40
                                 mipmap: false
