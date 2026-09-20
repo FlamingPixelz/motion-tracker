@@ -68,6 +68,7 @@ import QtQuick.Shapes
                             spacing: 12
 
                         Shape {
+                            id: shapeContainer
                             width: 540
                             height: 40
                             Layout.alignment: Qt.AlignVCenter
@@ -75,7 +76,6 @@ import QtQuick.Shapes
                             layer.samples: 8
 
                             ShapePath {
-                                id: shapeContainer
                                 strokeWidth: 2
                                 fillColor: colourChange.containsMouse ? '#1b152a' : "transparent"
                                 strokeColor: "#544970"
@@ -262,6 +262,29 @@ import QtQuick.Shapes
                                 font.pixelSize: 12
                                 Layout.fillWidth: true
                                 
+                            }
+
+                            Image {
+                                id: forgetBtn
+                                visible: model.paired
+                                anchors.top: parent.top
+                                anchors.left: parent.left
+                                anchors.leftMargin: 255
+                                anchors.topMargin: 5
+                                width: 40
+                                height: 40
+                                mipmap: false
+                                source: forgetHover.containsMouse ? "../assets/icons/forget-hover.svg" : "../assets/icons/forget"
+                                scale: forgetHover.containsMouse ? 1.05 : 1.0
+
+                                MouseArea {
+                                    id: forgetHover
+                                    anchors.fill: forgetBtn
+                                    cursorShape: Qt.PointingHandCursor
+                                    hoverEnabled: true
+
+
+                                }
                             }
                         }
                     }
