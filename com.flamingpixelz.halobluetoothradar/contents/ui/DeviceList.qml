@@ -236,7 +236,7 @@ import QtQuick.Controls
 
                         Item {
                             width: parent.width
-                            height: 60
+                            height: 90
 
                             Text {
                                 visible: model.typeName !== ""
@@ -252,12 +252,51 @@ import QtQuick.Controls
 
                             }
 
+                            TextField {
+                                id: aliasInput
+                                anchors.top: parent.top
+                                anchors.topMargin: 25
+                                anchors.left: parent.left
+                                anchors.leftMargin: 5
+                                placeholderText: "Alias"
+                                font.family: root.fontFamily
+
+                                background: Rectangle {
+                                    implicitHeight: 10
+                                    implicitWidth: 300
+                                    color: aliasInput.enabled ? "transparent" : "#353637"
+                                    border.color: aliasInput.enabled ? "#544970" : "transparent"
+                                }
+
+                                Image {
+                                    id: submitAlias
+                                    anchors.top: parent.top
+                                    anchors.topMargin: 1
+                                    anchors.right: parent.right
+                                    anchors.rightMargin: 2
+                                    width: 25
+                                    height: 25
+                                    source: aliasHover.containsMouse ? "../assets/icons/connect-hover.svg" : "../assets/icons/connect.svg"
+                                    scale: aliasHover.containsMouse ? 1.05 : 1.0
+                                    z: 1
+
+                                    MouseArea {
+                                        id: aliasHover
+                                        anchors.fill: submitAlias
+                                        hoverEnabled: true
+                                        cursorShape: Qt.PointingHandCursor
+
+
+                                    }
+                                }
+                            }
+
                             Text {
                                 text: "Mac: " + model.address
                                 anchors.left: parent.left
                                 anchors.leftMargin: 5
                                 anchors.top: parent.top
-                                anchors.topMargin: 28
+                                anchors.topMargin: 60
                                 color: "#544970"
                                 font.family: root.fontFamily
                                 font.pixelSize: 12
@@ -299,7 +338,7 @@ import QtQuick.Controls
                                 anchors.left: parent.left
                                 font.pixelSize: 12
                                 anchors.leftMargin: 5
-                                anchors.topMargin: 50
+                                anchors.topMargin: 80
                                 checked: model.trusted
                                 onToggled : {
                                     btManager.setTrusted(model.address, checked)
