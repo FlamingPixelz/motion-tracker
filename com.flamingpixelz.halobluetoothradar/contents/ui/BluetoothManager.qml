@@ -156,9 +156,11 @@ Connections {
                 var entry = deviceToEntry(device)
                 if (idx !== -1) {
                     var wasConnected = devicesModel.get(idx).connected
-                    devicesModel.set(idx, entry)
                     if (entry.connected !== wasConnected) {
-                        devicesModel.move(idx, entry.connected ? 0 : devicesModel.count - 1, 1)
+                        devicesModel.remove(idx)
+                        addEntry(entry)
+                    } else {
+                        devicesModel.set(idx, entry)
                     }
                 } else {
                     addEntry(entry)

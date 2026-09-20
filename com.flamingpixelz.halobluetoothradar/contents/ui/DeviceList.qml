@@ -130,15 +130,15 @@ import QtQuick.Shapes
                             Image {
                                 id: connectBtn
                                 anchors.top: parent.top
-                                anchors.topMargin: 4
+                                anchors.topMargin: 5.5
                                 anchors.right: parent.right
-                                anchors.rightMargin: 10
+                                anchors.rightMargin: 11.5
                                 width: 25
                                 height: 25
                                 mipmap: false
                                 smooth: true
                                 visible: !model.connected && model.paired
-                                source: connectHover.containsMouse ? "../assets/icons/connect-hover.svg": "../assets/icons/connect.svg"
+                                source: connectHover.containsMouse ? "../assets/icons/connect1-hover.svg": "../assets/icons/connect1.svg"
                                 scale: connectHover.containsMouse ? 1.1 : 1.0
                                 z: 1
 
@@ -156,7 +156,7 @@ import QtQuick.Shapes
                                 anchors.top: parent.top
                                 anchors.topMargin: 5
                                 anchors.right: parent.right
-                                anchors.rightMargin: 10
+                                anchors.rightMargin: 11
                                 width: 25
                                 height: 25
                                 mipmap: false
