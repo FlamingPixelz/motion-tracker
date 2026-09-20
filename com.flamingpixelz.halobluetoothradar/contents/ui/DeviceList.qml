@@ -235,18 +235,33 @@ import QtQuick.Shapes
 
                         Item {
                             width: parent.width
-                            height: 160
-                            Image {
-                                id: dropdownEnergy
-                                anchors.horizontalCenter: shapeContainer.horizontalCenter
+                            height: 60
+
+                            Text {
+                                visible: model.typeName !== ""
+                                text: model.typeName
+                                anchors.left: parent.left
+                                anchors.leftMargin: 5
                                 anchors.top: parent.top
-                                anchors.topMargin: -60
-                                width: 300
-                                height: 300
-                                sourceSize: Qt.size(width * 2, height * 2)
-                                mipmap: false
-                                smooth: true
-                                source: "../assets/icons/dropdown.svg"
+                                anchors.topMargin: 5
+                                color: "#544970"
+                                font.family: root.fontFamily
+                                font.pixelSize: 14
+                                Layout.fillWidth: true
+
+                            }
+
+                            Text {
+                                text: "Mac: " + model.address
+                                anchors.left: parent.left
+                                anchors.leftMargin: 5
+                                anchors.top: parent.top
+                                anchors.topMargin: 28
+                                color: "#544970"
+                                font.family: root.fontFamily
+                                font.pixelSize: 12
+                                Layout.fillWidth: true
+                                
                             }
                         }
                     }

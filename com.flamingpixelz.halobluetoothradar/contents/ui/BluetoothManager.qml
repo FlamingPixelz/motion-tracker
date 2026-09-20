@@ -98,7 +98,11 @@ Item {
         var connected = device.connected === true
         var paired = device.paired === true
         return {
-            address: device.address || "",
+            address: device.address,
+            trusted: device.trusted === true,
+            blocked: device.blocked === true,
+            type: device.type !== undefined ? device.type : 0,
+            typeName: deviceType(device.type),
             name: device.name || device.address || "Unknown",
             rssi: (device.rssi !== undefined && device.rssi !== null) ? device.rssi : 0, // Signal strength
             connected: device.connected === true,
@@ -106,11 +110,37 @@ Item {
             group: connected ? "allies": (paired ? "contacts": "nearby")
         }
     }
+
+    // Map device type to text
+    function deviceType(type) {
+        switch(type) {
+            case BluezQt.Device.Phone : return "Smartphone"
+            case BluezQt.Device.Modem : return "Modem"
+            case BluezQt.Device.Network : return "Network"
+            case BluezQt.Device.Headphones : return "Headphones"
+            case BluezQt.Device.Headset  : return "Headset"
+            case BluezQt.Device.AudioVideo : return "AudioVideo"
+            case BluezQt.Device.Peripheral : return "Peripheral"
+            case BluezQt.Device.camera : return "Camera"
+            case BluezQt.Device.Printer : return "Printer"
+            case BluezQt.Device.Imaging : return "Imaging"
+            case BluezQt.Device.Wearable : return "Wearable"
+            case BluezQt.Device.Toy : return "Toy"
+            case BluezQt.Device.Health : return "Health"
+            case BluezQt.Device.Joypad : return "Controller"
+            case BluezQt.Device.Keyboard : return "Keyboard"
+            case BluezQt.Device.Mouse : return "Mouse"
+            case BluezQt.Device.Tablet : return "Tablet"
+            case BluezQt.Device.Computer : return "Computer"
+            case BluezQt.Device.Uncategorized : return "Unknown"
+        }
+    }
     
+    // Convert to proper mac address format to filter out unnamed devices
     function filterBtDevice(device) {
         var name = device.name
         if(!name) return false
-        return name.replace(/-/g, ":").toUpperCase() !== device.address.toUpperCase() // Convert to proper mac address format
+        return name.replace(/-/g, ":").toUpperCase() !== device.address.toUpperCase()
     }
 
     function isRelevantDevice(device) {
