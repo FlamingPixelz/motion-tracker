@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Shapes
+import QtQuick.Controls
 
  ListView {
             id: root
@@ -282,8 +283,27 @@ import QtQuick.Shapes
                                     anchors.fill: forgetBtn
                                     cursorShape: Qt.PointingHandCursor
                                     hoverEnabled: true
+                                    onClicked: {
+                                        root.expandedAddress = ""
+                                        btManager.forgetDevice(model.address)
+                                    }
 
 
+                                }
+                            }
+
+                            Switch {
+                                text: "Trusted"
+                                font.family: root.fontFamily
+                                anchors.top: parent.top
+                                anchors.left: parent.left
+                                font.pixelSize: 12
+                                anchors.leftMargin: 5
+                                anchors.topMargin: 50
+                                checked: model.trusted
+                                onToggled : {
+                                    btManager.setTrusted(model.address, checked)
+                                    checked = Qt.binding(function() { return model.trusted })
                                 }
                             }
                         }

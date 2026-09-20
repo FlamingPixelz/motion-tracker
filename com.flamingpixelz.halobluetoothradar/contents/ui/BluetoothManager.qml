@@ -23,21 +23,21 @@ Item {
         }
     }
 
-    function startScan() {
-        var adapter = manager.usableAdapter
-        if(adapter && !adapter.discovering) {
+        function startScan() {
+            var adapter = manager.usableAdapter
+            if(adapter && !adapter.discovering) {
             adapter.startDiscovery()
         }
     }
 
-    function stopScan() {
-        var adapter = manager.usableAdapter 
-        if(adapter && adapter.discovering) {
+        function stopScan() {
+            var adapter = manager.usableAdapter 
+            if(adapter && adapter.discovering) {
             adapter.stopDiscovery()
         }
     }
 
-            function deviceForAddress(address) {
+        function deviceForAddress(address) {
             var adapter = manager.usableAdapter
             return adapter ? adapter.deviceForAddress(address) : null
         }
@@ -56,11 +56,19 @@ Item {
             var adapter = manager.usableAdapter
             var device = deviceForAddress(address)
             if (adapter && device) adapter.removeDevice(device)
+
+            var index = indexOfDevice(address)
+            if(index !== -1) devicesModel.remove(index)
         }
 
         function setDeviceAlias(address, alias) {
             var device = deviceForAddress(address)
             if (device) device.name = alias
+        }
+
+        function setTrusted(address, value) {
+            var device = deviceForAddress(address)
+            if(device) device.trusted = value
         }
 
         function addEntry(entry) {
@@ -192,23 +200,28 @@ Connections {
             }
         }
 
+        function onDeviceRemoved(device) {
+            var index = indexOfDevice(device.address)
+            if(index !== -1) devicesModel.remove(index)
+        }
+
         function onDeviceChanged(device) {
-            var idx = indexOfDevice(device.address)
+            var index = indexOfDevice(device.address)
             if (isRelevantDevice(device)) {
                 var entry = deviceToEntry(device)
-                if (idx !== -1) {
-                    var wasConnected = devicesModel.get(idx).group
+                if (index !== -1) {
+                    var wasConnected = devicesModel.get(index).group
                     if (entry.group !== wasConnected) {
-                        devicesModel.remove(idx)
+                        devicesModel.remove(index)
                         addEntry(entry)
                     } else {
-                        devicesModel.set(idx, entry)
+                        devicesModel.set(index, entry)
                     }
                 } else {
                     addEntry(entry)
                 }
-            } else if (idx !== -1) {
-                devicesModel.remove(idx)
+            } else if (index !== -1) {
+                devicesModel.remove(index)
             }
         }
     }
