@@ -10,14 +10,14 @@ import QtQuick.Shapes
             clip: true
             model: btManager ? btManager.devicesModel : null
 
-            section.property: "connected"
+            section.property: "group"
             section.delegate: Item {
                 required property string section
                 width: root.width
                 height: 30
 
                 Text {
-                    text: section === "true" ? "Allies" : "Contacts"
+                    text: section === "allies" ? "Allies" : (section === "contacts" ? "Contacts": "Nearby")
                     color: '#544970'
                     font.family: root.fontFamily
                     font.underline: true

@@ -64,8 +64,17 @@ Item {
         }
 
         function addEntry(entry) {
-            if (entry.connected) devicesModel.insert(0, entry)
-            else devicesModel.append(entry)
+            if(entry.group === "allies") {
+                devicesModel.insert(0, entry)
+            }
+            else if (entry.group === "nearby") {
+                devicesModel.append(entry)
+            } 
+            else {
+                var i = 0
+                while(i < devicesModel.count && devicesModel.get(i).group !== "nearby") i++
+                devicesModel.insert(i, entry)
+            }
         }
 
         
@@ -86,12 +95,15 @@ Item {
 
     // Converts BluezQt device into plan JS object
     function deviceToEntry(device) {
+        var connected = device.connected === true
+        var paired = device.paired === true
         return {
             address: device.address || "",
             name: device.name || device.address || "Unknown",
             rssi: (device.rssi !== undefined && device.rssi !== null) ? device.rssi : 0, // Signal strength
             connected: device.connected === true,
-            paired: device.paired === true
+            paired: device.paired === true,
+            group: connected ? "allies": (paired ? "contacts": "nearby")
         }
     }
     
@@ -155,8 +167,8 @@ Connections {
             if (isRelevantDevice(device)) {
                 var entry = deviceToEntry(device)
                 if (idx !== -1) {
-                    var wasConnected = devicesModel.get(idx).connected
-                    if (entry.connected !== wasConnected) {
+                    var wasConnected = devicesModel.get(idx).group
+                    if (entry.group !== wasConnected) {
                         devicesModel.remove(idx)
                         addEntry(entry)
                     } else {
