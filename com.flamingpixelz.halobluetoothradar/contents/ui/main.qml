@@ -7,7 +7,7 @@ import QtQuick.Effects
 PlasmoidItem {
     id: root
     preferredRepresentation: compactRepresentation
-    property color backgroundColour: "#130F1D"
+    property color backgroundColour: "#0C0C14"
 
     BluetoothManager {
         id: bluetoothManager

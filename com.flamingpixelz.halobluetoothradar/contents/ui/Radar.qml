@@ -25,7 +25,7 @@ Item {
         // Radar Circle
         Rectangle {
             anchors.fill: parent
-            color: "#130F1D"
+            color: "transparent"
 
             Rectangle {
                 anchors.centerIn: parent

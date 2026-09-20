@@ -75,6 +75,7 @@ import QtQuick.Shapes
                             layer.samples: 8
 
                             ShapePath {
+                                id: shapeContainer
                                 strokeWidth: 2
                                 fillColor: colourChange.containsMouse ? '#1b152a' : "transparent"
                                 strokeColor: "#544970"
@@ -220,8 +221,33 @@ import QtQuick.Shapes
                                 id: colourChange
                                 anchors.fill: parent
                                 hoverEnabled: true
+                                onClicked: root.expandedAddress = deviceDelegate.expanded ? "" : model.address
                             }
                         }       
+                        }
+                    }
+
+                    // Dropdown list
+                    Column {
+                        id: detailColumn
+                        width: parent.width
+                        topPadding: 0
+
+                        Item {
+                            width: parent.width
+                            height: 160
+                            Image {
+                                id: dropdownEnergy
+                                anchors.horizontalCenter: shapeContainer.horizontalCenter
+                                anchors.top: parent.top
+                                anchors.topMargin: -60
+                                width: 300
+                                height: 300
+                                sourceSize: Qt.size(width * 2, height * 2)
+                                mipmap: false
+                                smooth: true
+                                source: "../assets/icons/dropdown.svg"
+                            }
                         }
                     }
                 }
