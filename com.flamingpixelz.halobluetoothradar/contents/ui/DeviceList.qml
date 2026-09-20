@@ -281,7 +281,7 @@ import QtQuick.Controls
                                     anchors.rightMargin: 2
                                     width: 25
                                     height: 25
-                                    source: aliasHover.containsMouse ? "../assets/icons/connect-hover.svg" : "../assets/icons/connect.svg"
+                                    source: aliasHover.containsMouse ? "../assets/icons/reset-hover.svg" : "../assets/icons/reset.svg"
                                     scale: aliasHover.containsMouse ? 1.05 : 1.0
                                     z: 1
 
@@ -290,11 +290,7 @@ import QtQuick.Controls
                                         anchors.fill: submitAlias
                                         hoverEnabled: true
                                         cursorShape: Qt.PointingHandCursor
-                                        onClicked: {
-                                            if(aliasInput.text.trim() !== "") {
-                                                btManager.setDeviceAlias(model.address, aliasInput.text.trim()) 
-                                            }  
-                                        } 
+                                        onClicked: btManager.resetAlias(model.address)
 
                                     }
                                 }

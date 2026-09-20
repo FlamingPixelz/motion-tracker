@@ -66,10 +66,15 @@ Item {
             if (device) device.name = alias
         }
 
+        function resetAlias(address) {
+            var device = deviceForAddress(address) 
+            if(device) device.name = ""
+        }
+
         function setTrusted(address, value) {
             var device = deviceForAddress(address)
             if(device) device.trusted = value
-        }
+        } 
 
         function addEntry(entry) {
             if(entry.group === "allies") {
