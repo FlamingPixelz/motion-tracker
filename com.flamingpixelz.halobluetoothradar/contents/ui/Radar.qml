@@ -5,6 +5,7 @@ Item {
     property string radarColour: '#8c2ca2'
     property string blipColour: "#DA3E62"
     property string connectedBlip: "#D58AB6"
+    property string unpairedBlip: "#544970"
     property real radarSize: 150
     property var devicesModel: null
     property bool active: true
@@ -183,7 +184,7 @@ Item {
                         width: detected ? detectedSize : normalSize
                         height: detected ? detectedSize : normalSize
                         radius: height/2
-                        color: model.connected ? connectedBlip : blipColour
+                        color: model.connected ? connectedBlip : (model.paired ? blipColour : unpairedBlip)
 
                         Component.onCompleted: {
 
