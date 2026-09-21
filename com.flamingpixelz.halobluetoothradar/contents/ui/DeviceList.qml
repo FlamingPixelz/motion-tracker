@@ -46,7 +46,7 @@ import QtQuick.Controls
 
                     Text {
                         text: model.group === "allies" ? "ALLIES" : (model.group === "contacts" ? "CONTACTS": "NEARBY")
-                        color: '#544970'
+                        color: '#5a468c'
                         font.family: root.fontFamily
                         font.underline: true
                         font.pixelSize: 15

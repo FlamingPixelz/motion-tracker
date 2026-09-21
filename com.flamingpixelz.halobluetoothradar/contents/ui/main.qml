@@ -93,7 +93,7 @@ PlasmoidItem {
             devicesModel: bluetoothManager.devicesModel
             visible: bluetoothManager.bluetoothEnabled
             active: root.expanded && bluetoothManager.bluetoothEnabled
-            radarColour: bluetoothManager.discovering ? "#495F94" : "#8c2ca2"
+            radarColour: bluetoothManager.discovering ? "#495F94" : "#5a468c"
             scale: scanMouseArea.pressed ? 0.95 : 1.0
 
             // Start scan
