@@ -45,7 +45,7 @@ import QtQuick.Controls
 
 
                     Text {
-                        text: model.group === "allies" ? "Allies" : (model.group === "contacts" ? "Contacts": "Nearby")
+                        text: model.group === "allies" ? "ALLIES" : (model.group === "contacts" ? "CONTACTS": "NEARBY")
                         color: '#544970'
                         font.family: root.fontFamily
                         font.underline: true
@@ -256,10 +256,12 @@ import QtQuick.Controls
                                 id: aliasInput
                                 anchors.top: parent.top
                                 anchors.topMargin: 25
+                                color: "#e0d8ec"
                                 anchors.left: parent.left
                                 anchors.leftMargin: 5
                                 width: 230
                                 placeholderText: "Alias"
+                                font.pixelSize: 12
                                 font.family: root.fontFamily
                                 // Press Enter 
                                 onAccepted: {

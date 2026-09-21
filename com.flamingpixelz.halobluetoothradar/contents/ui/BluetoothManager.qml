@@ -9,7 +9,6 @@ Item {
     readonly property bool bluetoothEnabled: manager.bluetoothOperational
     readonly property bool discovering: manager.usableAdapter ? manager.usableAdapter.discovering : false
 
-    // Turn BT on/off
     function toggleBt() {
         var enable = !manager.bluetoothOperational
 
@@ -162,7 +161,7 @@ Item {
     }
 
     function isRelevantDevice(device) {
-        return device.paired || filterBtDevice(device)
+        return device.paired || (root.discovering && filterBtDevice(device))
     }
 
     function pairDevice(address) {
