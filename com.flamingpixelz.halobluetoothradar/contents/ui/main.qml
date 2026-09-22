@@ -24,10 +24,14 @@ PlasmoidItem {
 
         Image {
            anchors.centerIn: parent
-           width: 28
-           height: 28
-           source: "../assets/icons/forerunner-bt.svg" 
+           width: 50
+           height: 50
+           source: "../assets/icons/bluetooth-idle.svg" 
+           sourceSize.width: width * 2
+           sourceSize.height: height * 2
            fillMode: Image.PreserveAspectFit
+           smooth: true
+           mipmap: false
         }
     }
 
