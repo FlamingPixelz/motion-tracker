@@ -24,9 +24,15 @@ PlasmoidItem {
 
         Image {
            anchors.centerIn: parent
-           width: 50
-           height: 50
-           source: "../assets/icons/bluetooth-idle.svg" 
+           width: 32
+           height: 32
+           source: bluetoothManager.connected 
+           ? "../assets/icons/bluetooth-connected.svg" :
+           bluetoothManager.discovering 
+           ? "../assets/icons/bluetooth-scanning.svg" :
+            bluetoothManager.bluetoothEnabled ? 
+            "../assets/icons/bluetooth-idle.svg" 
+            : "../assets/icons/bluetooth-off.svg" 
            sourceSize.width: width * 2
            sourceSize.height: height * 2
            fillMode: Image.PreserveAspectFit
