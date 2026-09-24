@@ -15,12 +15,13 @@ Item {
         var enable = !manager.bluetoothOperational
 
         if(enable && manager.bluetoothBlocked) {
-            console.log("Bluetooth is blocked, cannot enable")
             manager.bluetoothBlocked = false
             return
         }
         for(var i = 0; i < manager.adapters.length; i++) {
+            numberOfConnected = 0
             manager.adapters[i].powered = enable
+            console.log("Devices Connected: " + numberOfConnected)
         }
     }
 
@@ -46,8 +47,6 @@ Item {
         function connectDevice(address) {
             var device = deviceForAddress(address)
             if (device) {
-                numberOfConnected++;
-                console.log("Devices Connected: " + numberOfConnected)
                 device.connectToDevice() 
             }
         }
@@ -55,8 +54,6 @@ Item {
         function disconnectDevice(address) {
             var device = deviceForAddress(address)
             if (device) {
-                numberOfConnected--;
-                console.log("Devices Connected: " + numberOfConnected)
                 device.disconnectFromDevice()
             }
         }
@@ -72,7 +69,13 @@ Item {
         function forgetDevice(address) {
             var adapter = manager.usableAdapter
             var device = deviceForAddress(address)
-            if (adapter && device) adapter.removeDevice(device)
+            if (adapter && device) {
+                if(device.connected === true) {
+                    numberOfConnected--;
+                    console.log("Devices Connected: " + numberOfConnected)
+                }
+                adapter.removeDevice(device)
+            }
 
             var index = indexOfDevice(address)
             if(index !== -1) devicesModel.remove(index)
@@ -184,8 +187,9 @@ Item {
 
     function pairDevice(address) {
     var device = deviceForAddress(address)
-    if (device) device.pair()
-    device.connectToDevice()
+    if (device) {
+        device.pair()
+    }
 }
 
 function pruneUnpairedDevices() {
@@ -237,13 +241,25 @@ Connections {
             if (isRelevantDevice(device)) {
                 var entry = deviceToEntry(device)
                 if (index !== -1) {
-                    var wasConnected = devicesModel.get(index).group
-                    if (entry.group !== wasConnected) {
+
+                    var oldEntry = devicesModel.get(index)
+                    var wasGroup = oldEntry.group
+                    var wasConnected = oldEntry.connected
+
+                    if (entry.group !== wasGroup) {
                         devicesModel.remove(index)
                         addEntry(entry)
                     } else {
                         devicesModel.set(index, entry)
                     }
+                    if(entry.connected && !wasConnected) {
+                        numberOfConnected++
+                        console.log("Devices Connected: " + numberOfConnected)
+                    } else if (!entry.connected && wasConnected && numberOfConnected > 0) {
+                        numberOfConnected--
+                        console.log("Devices Connected: " + numberOfConnected)
+                    }
+
                 } else {
                     addEntry(entry)
                 }
