@@ -21,7 +21,6 @@ Item {
         for(var i = 0; i < manager.adapters.length; i++) {
             numberOfConnected = 0
             manager.adapters[i].powered = enable
-            console.log("Devices Connected: " + numberOfConnected)
         }
     }
 

@@ -121,6 +121,14 @@ PlasmoidItem {
                     easing.type: Easing.InOutQuad
                 }
         }
+    } 
+
+    ScanningBar {
+        anchors.top: radarDisplay.bottom
+        anchors.left: radarDisplay.left
+        anchors.topMargin: 10
+        width: 150
+        height: 10
     }
 
         Image {
