@@ -26,7 +26,7 @@ PlasmoidItem {
            anchors.centerIn: parent
            width: 32
            height: 32
-           source: bluetoothManager.connected 
+           source: bluetoothManager.devicesConnected() 
            ? "../assets/icons/bluetooth-connected.svg" :
            bluetoothManager.discovering 
            ? "../assets/icons/bluetooth-scanning.svg" :

@@ -6,6 +6,8 @@ Item {
 
     readonly property BluezQt.Manager manager: BluezQt.Manager
     property alias devicesModel: devicesModel
+    property real numberOfConnected: 0
+    property bool isConnected : false
     readonly property bool bluetoothEnabled: manager.bluetoothOperational
     readonly property bool discovering: manager.usableAdapter ? manager.usableAdapter.discovering : false
 
@@ -43,12 +45,28 @@ Item {
 
         function connectDevice(address) {
             var device = deviceForAddress(address)
-            if (device) device.connectToDevice()
+            if (device) {
+                numberOfConnected++;
+                console.log("Devices Connected: " + numberOfConnected)
+                device.connectToDevice() 
+            }
         }
 
         function disconnectDevice(address) {
             var device = deviceForAddress(address)
-            if (device) device.disconnectFromDevice()
+            if (device) {
+                numberOfConnected--;
+                console.log("Devices Connected: " + numberOfConnected)
+                device.disconnectFromDevice()
+            }
+        }
+        
+        function devicesConnected() {
+            if (numberOfConnected > 0) {
+                return isConnected = true
+            } else {
+                return isConnected = false
+            }
         }
 
         function forgetDevice(address) {
