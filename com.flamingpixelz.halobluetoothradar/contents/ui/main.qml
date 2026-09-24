@@ -8,10 +8,20 @@ PlasmoidItem {
     id: root
     preferredRepresentation: compactRepresentation
     property color backgroundColour: "#130F1D"
+    property var scanningLimit: 1000*60
 
     BluetoothManager {
         id: bluetoothManager
     }
+
+    Timer {
+        interval: scanningLimit
+        running: bluetoothManager.discovering
+        onTriggered: {
+            bluetoothManager.stopScan()
+        }
+
+    }      
 
     compactRepresentation: Item {
         width: 32
@@ -22,6 +32,7 @@ PlasmoidItem {
             onClicked: root.expanded = !root.expanded
         }
 
+        // Widget Icon
         Image {
            anchors.centerIn: parent
            width: 32
@@ -113,7 +124,7 @@ PlasmoidItem {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: bluetoothManager.discovering ? bluetoothManager.stopScan() : bluetoothManager.startScan()
-            }
+            }        
 
             Behavior on scale {
                 NumberAnimation {
@@ -128,7 +139,9 @@ PlasmoidItem {
         anchors.left: radarDisplay.left
         anchors.topMargin: 10
         width: 150
-        height: 10
+        height: 7
+        visible: bluetoothManager.discovering
+        btManagerScan: bluetoothManager
     }
 
         Image {
