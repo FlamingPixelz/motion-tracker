@@ -147,21 +147,21 @@ PlasmoidItem {
         Image {
             id: offImage
             anchors.top: parent.top
-            anchors.topMargin: 60
+            anchors.topMargin: 40
             anchors.horizontalCenter: parent.horizontalCenter
-            width: 200
-            height: 200
+            width: 250
+            height: 250
             source: "../assets/icons/fog-skull.png" 
             fillMode: Image.PreserveAspectFit
             visible: !bluetoothManager.bluetoothEnabled
-            opacity: 0.4
+            opacity: 0.5
             smooth: false
             mipmap: false
         }
 
         Text {
             anchors.top: offImage.bottom
-            anchors.topMargin: 8
+            anchors.topMargin: 1
             anchors.horizontalCenter: parent.horizontalCenter
 
             text: "You'll miss those eyes in the back of your head"
