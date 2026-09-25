@@ -29,7 +29,7 @@ import QtQuick.Controls
                 property var liveDevice: (expanded || model.connected) ? btManager.deviceForAddress(model.address) : null
                 property int batteryPercentage: (liveDevice && liveDevice.battery) ? liveDevice.battery.percentage: -1
 
-                height: (checkGroup ? 30: 0) + headerRow.height + (expanded ? detailColumn.height + 12 : 0)
+                height: (checkGroup ? 50: 0) + headerRow.height + (expanded ? detailColumn.height + 12 : 0)
 
                 Behavior on height {
                     NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
@@ -41,22 +41,37 @@ import QtQuick.Controls
                 Item {
                 visible: deviceDelegate.checkGroup
                 width: parent.width
-                height: visible ? 30 : 0
+                height: visible ? 50 : 0
 
-
-                    Text {
-                        text: model.group === "allies" ? "ALLIES" : (model.group === "contacts" ? "CONTACTS": "NEARBY")
-                        color: '#5a468c'
-                        font.family: root.fontFamily
-                        font.underline: true
-                        font.pixelSize: 15
+                    Rectangle {
                         anchors.left: parent.left
-                        anchors.top: parent.top
-                        anchors.topMargin: 10
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 8
+                        anchors.bottomMargin: 10
+                        color: '#1a1428'
+                        width: 300
+                        height: 25
 
-                }
+                        Rectangle {
+                            anchors.left: parent.left
+                            width: 5
+                            height: 25
+                            color: '#7660af'
+                            opacity: 0.6
+                        }
+
+                     Text {
+                        text: model.group === "allies" ? "ALLIES" : (model.group === "contacts" ? "CONTACTS": "NEARBY")
+                        color: '#7660af'
+                        font.family: root.fontFamily
+                        font.pixelSize: 14
+                        anchors.left: parent.left
+                        anchors.leftMargin: 20
+                        anchors.top: parent.top
+                        anchors.topMargin: 5
+                        anchors.bottom: parent.bottom
+
+                }                       
+                    }
             }                    
 
                     Item {

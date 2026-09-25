@@ -147,10 +147,10 @@ PlasmoidItem {
         Image {
             id: offImage
             anchors.top: parent.top
-            anchors.topMargin: 40
+            anchors.topMargin: 50
             anchors.horizontalCenter: parent.horizontalCenter
-            width: 250
-            height: 250
+            width: 180
+            height: 180
             source: "../assets/icons/fog-skull.png" 
             fillMode: Image.PreserveAspectFit
             visible: !bluetoothManager.bluetoothEnabled
