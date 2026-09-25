@@ -7,7 +7,7 @@ import QtQuick.Effects
 PlasmoidItem {
     id: root
     preferredRepresentation: compactRepresentation
-    property color backgroundColour: "#130F1D"
+    property color backgroundColour: "#0D0D14"
     property var scanningLimit: 1000*60
 
     BluetoothManager {
@@ -147,27 +147,29 @@ PlasmoidItem {
         Image {
             id: offImage
             anchors.top: parent.top
-            anchors.topMargin: 50
+            anchors.topMargin: 55
             anchors.horizontalCenter: parent.horizontalCenter
-            width: 180
-            height: 180
-            source: "../assets/icons/fog-skull.png" 
+            width: 200
+            height: 200
+            sourceSize.width: width * 2
+            sourceSize.height: height * 2
+            source: "../assets/icons/fog-skull.svg" 
             fillMode: Image.PreserveAspectFit
             visible: !bluetoothManager.bluetoothEnabled
             opacity: 0.5
-            smooth: false
+            smooth: true
             mipmap: false
         }
 
         Text {
             anchors.top: offImage.bottom
-            anchors.topMargin: 1
+            anchors.topMargin: 10
             anchors.horizontalCenter: parent.horizontalCenter
 
             text: "You'll miss those eyes in the back of your head"
             font.family: haloFont.name
-            color: '#544970'
-            font.pixelSize: 18
+            color: '#7660af'
+            font.pixelSize: 17
             visible: !bluetoothManager.bluetoothEnabled
         }
 
