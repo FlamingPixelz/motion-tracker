@@ -156,22 +156,49 @@ PlasmoidItem {
             source: "../assets/icons/fog-skull.svg" 
             fillMode: Image.PreserveAspectFit
             visible: !bluetoothManager.bluetoothEnabled
-            opacity: 0.5
             smooth: true
             mipmap: false
         }
 
-        Text {
-            anchors.top: offImage.bottom
-            anchors.topMargin: 10
+        Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: offImage.bottom
+            anchors.topMargin: 20
+            color: '#1a1428'
+            width: 450
+            height: 25
+            visible: !bluetoothManager.bluetoothEnabled
 
-            text: "You'll miss those eyes in the back of your head"
+            Rectangle {
+                anchors.left: parent.left
+                width: 5
+                height: 25
+                color: '#7660af'
+                opacity: 0.6
+                visible: !bluetoothManager.bluetoothEnabled
+    }
+            Rectangle {
+                anchors.right: parent.right
+                width: 5
+                height: 25
+                color: '#7660af'
+                opacity: 0.6
+                visible: !bluetoothManager.bluetoothEnabled
+    }
+
+         Text {
+            
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: 40
+            anchors.topMargin: 3
+            text: "YOU'LL MISS THOSE EYES IN THE BACK OF YOUR HEAD"
             font.family: haloFont.name
             color: '#7660af'
-            font.pixelSize: 17
+            font.pixelSize: 14
             visible: !bluetoothManager.bluetoothEnabled
-        }
+        }           
+}
 
         DeviceList {
             id: deviceList

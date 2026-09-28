@@ -67,7 +67,7 @@ import QtQuick.Controls
                         anchors.left: parent.left
                         anchors.leftMargin: 20
                         anchors.top: parent.top
-                        anchors.topMargin: 5
+                        anchors.topMargin: 4
                         anchors.bottom: parent.bottom
 
                 }                       
