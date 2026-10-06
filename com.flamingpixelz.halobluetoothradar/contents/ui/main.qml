@@ -8,7 +8,14 @@ PlasmoidItem {
     id: root
     preferredRepresentation: compactRepresentation
     property color backgroundColour: "#0D0D14"
+    property color purpleHighlight: '#7660af'
+    property color radarScanning: "#495F94"
+    property color radarColor: "#5a468c"
+    property color textboxColor: '#1a1428'
     property var scanningLimit: 1000*60
+
+    property var btEnabled: bluetoothManager.bluetoothEnabled
+    property var btDiscovering: bluetoothManager.discovering
 
     BluetoothManager {
         id: bluetoothManager
@@ -16,7 +23,7 @@ PlasmoidItem {
 
     Timer {
         interval: scanningLimit
-        running: bluetoothManager.discovering
+        running: btDiscovering
         onTriggered: {
             bluetoothManager.stopScan()
         }
@@ -37,11 +44,11 @@ PlasmoidItem {
            anchors.centerIn: parent
            width: 32
            height: 32
-           source: bluetoothManager.discovering 
+           source: btDiscovering
            ? "../assets/icons/bluetooth-scanning.svg" :
            bluetoothManager.devicesConnected() 
            ? "../assets/icons/bluetooth-connected.svg" :
-            bluetoothManager.bluetoothEnabled ? 
+            btEnabled ? 
             "../assets/icons/bluetooth-idle.svg" 
             : "../assets/icons/bluetooth-off.svg" 
            sourceSize.width: width * 2
@@ -65,6 +72,7 @@ PlasmoidItem {
         Rectangle {
             anchors.fill: parent
             color: backgroundColour
+            anchors.margins: -5
         }
 
         // Turn BT on/off button
@@ -74,13 +82,13 @@ PlasmoidItem {
             height: 60
             radius: 8
             color: "transparent"
-            scale: mouseArea.pressed ? 1.02 : 1.1
+            scale: mouseArea.containsMouse ? 1.2 : 1.1
 
             Image {
                 anchors.centerIn: parent
                 width: 200
                 height: 200
-                source: bluetoothManager.bluetoothEnabled ? "../assets/icons/fog-off.svg": "../assets/icons/fog-on.svg" 
+                source: btEnabled ? "../assets/icons/fog-off.svg": "../assets/icons/fog-on.svg" 
                 sourceSize.width: width
                 sourceSize.height: height
                 fillMode: Image.PreserveAspectFit
@@ -112,9 +120,9 @@ PlasmoidItem {
             width: 150
             height: 150
             devicesModel: bluetoothManager.devicesModel
-            visible: bluetoothManager.bluetoothEnabled
-            active: root.expanded && bluetoothManager.bluetoothEnabled
-            radarColour: bluetoothManager.discovering ? "#495F94" : "#5a468c"
+            visible: btEnabled
+            active: root.expanded && btEnabled
+            radarColour: btDiscovering ? radarScanning : radarColor
             scale: scanMouseArea.pressed ? 0.95 : 1.0
 
             // Start scan
@@ -123,7 +131,7 @@ PlasmoidItem {
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
-                onClicked: bluetoothManager.discovering ? bluetoothManager.stopScan() : bluetoothManager.startScan()
+                onClicked: btDiscovering ? bluetoothManager.stopScan() : bluetoothManager.startScan()
             }        
 
             Behavior on scale {
@@ -139,15 +147,16 @@ PlasmoidItem {
         anchors.left: radarDisplay.left
         anchors.topMargin: 10
         width: 150
-        height: 7
-        visible: bluetoothManager.discovering
+        height: 6
+        visible: btDiscovering
         btManagerScan: bluetoothManager
     }
 
+        // BT Off Screen
         Image {
             id: offImage
             anchors.top: parent.top
-            anchors.topMargin: 55
+            anchors.topMargin: 50
             anchors.horizontalCenter: parent.horizontalCenter
             width: 200
             height: 200
@@ -155,35 +164,42 @@ PlasmoidItem {
             sourceSize.height: height * 2
             source: "../assets/icons/fog-skull.svg" 
             fillMode: Image.PreserveAspectFit
-            visible: !bluetoothManager.bluetoothEnabled
+            visible: !btEnabled
             smooth: true
             mipmap: false
+
+                PulseEffect {
+                anchors.centerIn: parent
+                anchors.horizontalCenterOffset: 2
+                anchors.verticalCenterOffset: -10
+                z: -1
+        }
         }
 
         Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: offImage.bottom
-            anchors.topMargin: 20
-            color: '#1a1428'
+            anchors.topMargin: 15
+            color: textboxColor
             width: 450
             height: 25
-            visible: !bluetoothManager.bluetoothEnabled
+            visible: !btEnabled
 
             Rectangle {
                 anchors.left: parent.left
                 width: 5
                 height: 25
-                color: '#7660af'
+                color: purpleHighlight
                 opacity: 0.6
-                visible: !bluetoothManager.bluetoothEnabled
+                visible: !btEnabled
     }
             Rectangle {
                 anchors.right: parent.right
                 width: 5
                 height: 25
-                color: '#7660af'
+                color: purpleHighlight
                 opacity: 0.6
-                visible: !bluetoothManager.bluetoothEnabled
+                visible: !btEnabled
     }
 
          Text {
@@ -191,12 +207,12 @@ PlasmoidItem {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.leftMargin: 40
-            anchors.topMargin: 3
+            anchors.topMargin: 4
             text: "YOU'LL MISS THOSE EYES IN THE BACK OF YOUR HEAD"
             font.family: haloFont.name
-            color: '#7660af'
+            color: purpleHighlight
             font.pixelSize: 14
-            visible: !bluetoothManager.bluetoothEnabled
+            visible: !btEnabled
         }           
 }
 
@@ -208,7 +224,7 @@ PlasmoidItem {
             anchors.leftMargin: 30
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            visible: bluetoothManager.bluetoothEnabled
+            visible: btEnabled
 
             btManager: bluetoothManager
             fontFamily: haloFont.name

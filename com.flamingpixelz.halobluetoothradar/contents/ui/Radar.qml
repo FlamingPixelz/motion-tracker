@@ -2,10 +2,10 @@ import QtQuick
 
 Item {
     id: radar
-    property string radarColour: '#8c2ca2'
-    property string blipColour: "#DA3E62"
-    property string connectedBlip: "#D58AB6"
-    property string unpairedBlip: "#544970"
+    property color radarColour: '#8c2ca2'
+    property color blipColour: "#DA3E62"
+    property color connectedBlip: "#D58AB6"
+    property color unpairedBlip: "#7660af"
     property real radarSize: 150
     property var devicesModel: null
     property bool active: true
@@ -19,6 +19,7 @@ Item {
 
     property real pulseRadius: 0
 
+    property real blipSize: 7
     property real blipJolt: 0.09
     property real blipSpeed: 0.5
 
@@ -113,7 +114,7 @@ Item {
                             target: radar
                             property: "pulseRadius"
                             from: 0
-                            to: 75
+                            to: radarSize / 2
                             duration: 1500
                             easing.type: Easing.OutQuad
 
@@ -178,11 +179,10 @@ Item {
 
                     Rectangle {
                         id: blip
-                        property real normalSize: 6
-                        property real detectedSize: 7
+                        property real detectedSize: blipSize + 1
                         property bool detected: false
-                        width: detected ? detectedSize : normalSize
-                        height: detected ? detectedSize : normalSize
+                        width: detected ? detectedSize : blipSize
+                        height: detected ? detectedSize : blipSize
                         radius: height/2
                         color: model.connected ? connectedBlip : (model.paired ? blipColour : unpairedBlip)
 

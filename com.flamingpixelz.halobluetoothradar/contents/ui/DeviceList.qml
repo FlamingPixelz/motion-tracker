@@ -8,6 +8,14 @@ import QtQuick.Controls
             property string expandedAddress: ""
             property var btManager
             property string fontFamily: ""
+            property color purpleHighlight: '#7660af'
+            property color textboxColor: '#1a1428'
+            property color outline: "#544970"
+            property color connectedBlip: "#D58AB6"
+            property color blipColour: "#DA3E62"
+            property color textColour: "#e0d8ec"
+
+
             clip: true
             model: btManager ? btManager.devicesModel : null
 
@@ -47,7 +55,7 @@ import QtQuick.Controls
                         anchors.left: parent.left
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 10
-                        color: '#1a1428'
+                        color: textboxColor
                         width: 300
                         height: 25
 
@@ -55,13 +63,13 @@ import QtQuick.Controls
                             anchors.left: parent.left
                             width: 5
                             height: 25
-                            color: '#7660af'
+                            color: purpleHighlight
                             opacity: 0.6
                         }
 
                      Text {
                         text: model.group === "allies" ? "ALLIES" : (model.group === "contacts" ? "CONTACTS": "NEARBY")
-                        color: '#7660af'
+                        color: purpleHighlight
                         font.family: root.fontFamily
                         font.pixelSize: 14
                         anchors.left: parent.left
@@ -93,8 +101,8 @@ import QtQuick.Controls
 
                             ShapePath {
                                 strokeWidth: 2
-                                fillColor: colourChange.containsMouse ? '#1b152a' : "transparent"
-                                strokeColor: "#544970"
+                                fillColor: colourChange.containsMouse ? textboxColor : "transparent"
+                                strokeColor: outline
 
                                 startX: 2;  startY: 32
                                 PathLine { x: 7; y: 10 }
@@ -107,22 +115,22 @@ import QtQuick.Controls
                             }
                             Rectangle {
                                 anchors.left: parent.left
-                                anchors.leftMargin: 11
+                                anchors.leftMargin: 13
                                 anchors.top: parent.top
                                 anchors.topMargin: 14.5
                                 width: 6
                                 height: 6
                                 radius: 3.5
-                                color: model.connected ? "#D58AB6" : (model.paired ? "#DA3E62" : "#544970")
+                                color: model.connected ? connectedBlip : (model.paired ? blipColour : purpleHighlight)
                             }
 
                             Text {
                                 text: model.name
                                 anchors.left: parent.left
-                                anchors.leftMargin: 21
+                                anchors.leftMargin: 25
                                 anchors.top: parent.top
                                 anchors.topMargin: 10
-                                color: "#e0d8ec"
+                                color: textColour
                                 font.family: root.fontFamily
                                 font.pixelSize: 12
                                 Layout.fillWidth: true
@@ -148,7 +156,7 @@ import QtQuick.Controls
                                     anchors.centerIn: parent
                                     font.pixelSize: 8
                                     font.family: root.fontFamily
-                                    color: "#e0d8ec"
+                                    color: textColour
                                 }
                             }
 
@@ -260,7 +268,7 @@ import QtQuick.Controls
                                 anchors.leftMargin: 5
                                 anchors.top: parent.top
                                 anchors.topMargin: 5
-                                color: "#544970"
+                                color: outline
                                 font.family: root.fontFamily
                                 font.pixelSize: 14
                                 Layout.fillWidth: true
@@ -271,7 +279,7 @@ import QtQuick.Controls
                                 id: aliasInput
                                 anchors.top: parent.top
                                 anchors.topMargin: 25
-                                color: "#e0d8ec"
+                                color: textColour
                                 anchors.left: parent.left
                                 anchors.leftMargin: 5
                                 width: 230
@@ -286,14 +294,14 @@ import QtQuick.Controls
                                 }
 
                                 background: Rectangle {
-                                    color: aliasInput.enabled ? "transparent" : "#353637"
-                                    border.color: aliasInput.enabled ? "#544970" : "transparent"
+                                    color: aliasInput.enabled ? "transparent" : outline
+                                    border.color: aliasInput.enabled ? outline : "transparent"
                                 }
 
                                 Image {
                                     id: resetAlias
                                     anchors.top: parent.top
-                                    anchors.topMargin: 1
+                                    anchors.topMargin: 0.5
                                     anchors.right: parent.right
                                     anchors.rightMargin: 2
                                     width: 25
@@ -319,7 +327,7 @@ import QtQuick.Controls
                                 anchors.leftMargin: 5
                                 anchors.top: parent.top
                                 anchors.topMargin: 60
-                                color: "#544970"
+                                color: outline
                                 font.family: root.fontFamily
                                 font.pixelSize: 12
                                 Layout.fillWidth: true

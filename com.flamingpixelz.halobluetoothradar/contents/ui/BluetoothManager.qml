@@ -156,7 +156,7 @@ Item {
             case BluezQt.Device.Network : return "Network"
             case BluezQt.Device.Headphones : return "Headphones"
             case BluezQt.Device.Headset  : return "Headset"
-            case BluezQt.Device.AudioVideo : return "AudioVideo"
+            case BluezQt.Device.AudioVideo : return "Audio/Video"
             case BluezQt.Device.Peripheral : return "Peripheral"
             case BluezQt.Device.camera : return "Camera"
             case BluezQt.Device.Printer : return "Printer"

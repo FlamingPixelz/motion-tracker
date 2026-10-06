@@ -6,11 +6,11 @@ ProgressBar {
     property var btManagerScan: null
     property var scanningDuration: 60*1000
 
-    id: control
+    id: progress
     value: 0
     from: 0
     to: 1
-    padding: 2
+    padding: 0
 
     background: Rectangle {
         implicitWidth: 150
@@ -22,9 +22,9 @@ ProgressBar {
     contentItem: Item {
         
         Rectangle {
-            width: control.visualPosition * parent.width
+            width: progress.visualPosition * parent.width
             height: parent.height
-            radius: 2
+            radius: 4
             color: "#495F94"
         }
     }
@@ -41,24 +41,24 @@ ProgressBar {
         repeat: true
         running: btManagerScan ? btManagerScan.discovering : false
         onTriggered: {
-            if(control.value < control.to) {
-                control.value += 100 / scanningDuration
+            if(progress.value < progress.to) {
+                progress.value += 100 / scanningDuration
             } else {
-                control.value = 0
+                progress.value = 0
             }
         }
     }
 
     onVisibleChanged: {
         if(!(btManagerScan && btManagerScan.discovering)) {
-            control.value = 0
+            progress.value = 0
         }
     }
 
     Connections {
         target: btManagerScan
         function onDiscoveringChanged() {
-            control.value = 0
+            progress.value = 0
         }
     }
 }
