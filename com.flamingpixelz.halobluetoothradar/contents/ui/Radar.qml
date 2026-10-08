@@ -4,7 +4,7 @@ Item {
     id: radar
     property color radarColour: '#8c2ca2'
     property color blipColour: "#DA3E62"
-    property color connectedBlip: "#D58AB6"
+    property color connectedBlip: "#D76CBF"
     property color unpairedBlip: "#7660af"
     property real radarSize: 150
     property var devicesModel: null

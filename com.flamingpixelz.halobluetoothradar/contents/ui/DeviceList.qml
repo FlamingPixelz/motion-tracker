@@ -9,9 +9,10 @@ import QtQuick.Controls
             property var btManager
             property string fontFamily: ""
             property color purpleHighlight: '#7660af'
+            property color shapeOutline: "#5a468c"
             property color textboxColor: '#1a1428'
             property color outline: "#544970"
-            property color connectedBlip: "#D58AB6"
+            property color connectedBlip: "#D76CBF"
             property color blipColour: "#DA3E62"
             property color textColour: "#e0d8ec"
 
@@ -102,7 +103,7 @@ import QtQuick.Controls
                             ShapePath {
                                 strokeWidth: 2
                                 fillColor: colourChange.containsMouse ? textboxColor : "transparent"
-                                strokeColor: outline
+                                strokeColor: shapeOutline
 
                                 startX: 2;  startY: 32
                                 PathLine { x: 7; y: 10 }
@@ -154,6 +155,7 @@ import QtQuick.Controls
                                     visible: batteryImage.visible
                                     text: batteryPercentage
                                     anchors.centerIn: parent
+                                    anchors.horizontalCenterOffset: -0.5
                                     font.pixelSize: 8
                                     font.family: root.fontFamily
                                     color: textColour
@@ -165,7 +167,7 @@ import QtQuick.Controls
                                 anchors.top: parent.top
                                 anchors.topMargin: 5.5
                                 anchors.right: parent.right
-                                anchors.rightMargin: 11.5
+                                anchors.rightMargin: 13
                                 width: 25
                                 height: 25
                                 mipmap: false
@@ -189,7 +191,7 @@ import QtQuick.Controls
                                 anchors.top: parent.top
                                 anchors.topMargin: 5
                                 anchors.right: parent.right
-                                anchors.rightMargin: 11
+                                anchors.rightMargin: 12
                                 width: 25
                                 height: 25
                                 mipmap: false
@@ -214,7 +216,7 @@ import QtQuick.Controls
                                 anchors.top: parent.top
                                 anchors.topMargin: 2
                                 anchors.right: parent.right
-                                anchors.rightMargin: 10
+                                anchors.rightMargin: 11
                                 width: 30
                                 height: 30
                                 mipmap: false
@@ -265,10 +267,12 @@ import QtQuick.Controls
                                 visible: model.typeName !== ""
                                 text: model.typeName
                                 anchors.left: parent.left
+                                font.underline: true
+                                font.bold: true
                                 anchors.leftMargin: 5
                                 anchors.top: parent.top
                                 anchors.topMargin: 5
-                                color: outline
+                                color: shapeOutline
                                 font.family: root.fontFamily
                                 font.pixelSize: 14
                                 Layout.fillWidth: true
@@ -278,11 +282,11 @@ import QtQuick.Controls
                             TextField {
                                 id: aliasInput
                                 anchors.top: parent.top
-                                anchors.topMargin: 25
+                                anchors.topMargin: 45
                                 color: textColour
                                 anchors.left: parent.left
                                 anchors.leftMargin: 5
-                                width: 230
+                                width: 285
                                 placeholderText: "Alias"
                                 font.pixelSize: 12
                                 font.family: root.fontFamily
@@ -295,7 +299,7 @@ import QtQuick.Controls
 
                                 background: Rectangle {
                                     color: aliasInput.enabled ? "transparent" : outline
-                                    border.color: aliasInput.enabled ? outline : "transparent"
+                                    border.color: aliasInput.enabled ? shapeOutline : "transparent"
                                 }
 
                                 Image {
@@ -322,12 +326,13 @@ import QtQuick.Controls
                             }
 
                             Text {
-                                text: "Mac: " + model.address
+                                textFormat: Text.RichText
+                                text: "Mac: <font color=\"" + outline + "\">" + model.address + "</font>"
                                 anchors.left: parent.left
                                 anchors.leftMargin: 5
                                 anchors.top: parent.top
-                                anchors.topMargin: 60
-                                color: outline
+                                anchors.topMargin: 25
+                                color: shapeOutline
                                 font.family: root.fontFamily
                                 font.pixelSize: 12
                                 Layout.fillWidth: true
@@ -338,8 +343,8 @@ import QtQuick.Controls
                                 id: blockBtn
                                 anchors.top: parent.top
                                 anchors.left: parent.left
-                                anchors.leftMargin: 250
-                                anchors.topMargin: 20
+                                anchors.leftMargin: 255
+                                anchors.topMargin: 4
                                 width: 40
                                 height: 40
                                 mipmap: false
@@ -361,7 +366,7 @@ import QtQuick.Controls
                                 anchors.top: parent.top
                                 anchors.left: parent.left
                                 anchors.leftMargin: 50
-                                anchors.topMargin: 80
+                                anchors.topMargin: 77.25
                                 width: 40
                                 height: 40
                                 mipmap: false
