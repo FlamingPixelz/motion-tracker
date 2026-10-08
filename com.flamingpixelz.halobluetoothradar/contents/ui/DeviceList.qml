@@ -144,7 +144,9 @@ import QtQuick.Controls
                                 anchors.topMargin: 0
                                 anchors.right: parent.right
                                 anchors.rightMargin: 45
-                                source: "../assets/icons/battery.svg" 
+                                source: batteryPercentage > 60 ? "../assets/icons/battery-full.svg"
+                                : batteryPercentage > 30 ? "../assets/icons/battery-mid.svg"
+                                : "../assets/icons/battery-low.svg"
                                 width: 35
                                 height: 35
                                 mipmap: false
@@ -344,7 +346,7 @@ import QtQuick.Controls
                                 anchors.top: parent.top
                                 anchors.left: parent.left
                                 anchors.leftMargin: 255
-                                anchors.topMargin: 4
+                                anchors.topMargin: 2
                                 width: 40
                                 height: 40
                                 mipmap: false
