@@ -37,6 +37,7 @@ import QtQuick.Controls
                 property bool expanded: root.expandedAddress === model.address
                 property var liveDevice: (expanded || model.connected) ? btManager.deviceForAddress(model.address) : null
                 property int batteryPercentage: (liveDevice && liveDevice.battery) ? liveDevice.battery.percentage: -1
+                property real dropdownWidth: model.paired ? 285 : 220
 
                 height: (checkGroup ? 50: 0) + headerRow.height + (expanded ? detailColumn.height + 12 : 0)
 
@@ -259,6 +260,7 @@ import QtQuick.Controls
                     Column {
                         id: detailColumn
                         width: parent.width
+                        height: model.paired ? 65 : 40
                         topPadding: 0
 
                         Item {
@@ -283,6 +285,7 @@ import QtQuick.Controls
 
                             TextField {
                                 id: aliasInput
+                                visible: model.paired
                                 anchors.top: parent.top
                                 anchors.topMargin: 45
                                 color: textColour
@@ -345,7 +348,7 @@ import QtQuick.Controls
                                 id: blockBtn
                                 anchors.top: parent.top
                                 anchors.left: parent.left
-                                anchors.leftMargin: 255
+                                anchors.leftMargin: 258
                                 anchors.topMargin: 5
                                 width: 35
                                 height: 35
@@ -367,10 +370,10 @@ import QtQuick.Controls
                                 visible: model.paired
                                 anchors.top: parent.top
                                 anchors.left: parent.left
-                                anchors.leftMargin: 50
-                                anchors.topMargin: 77.25
-                                width: 40
-                                height: 40
+                                anchors.leftMargin: 220
+                                anchors.topMargin: 3
+                                width: 35
+                                height: 35
                                 mipmap: false
                                 source: forgetHover.containsMouse ? "../assets/icons/forget-hover.svg" : "../assets/icons/forget.svg"
                                 scale: forgetHover.containsMouse ? 1.1 : 1.0
@@ -392,10 +395,10 @@ import QtQuick.Controls
                                 visible: model.paired
                                 anchors.top: parent.top
                                 anchors.left: parent.left
-                                anchors.leftMargin: 5
-                                anchors.topMargin: 80
-                                width: 40
-                                height: 40
+                                anchors.leftMargin: 185
+                                anchors.topMargin: 5.5
+                                width: 34
+                                height: 34
                                 mipmap: false
                                 source: model.trusted ? "../assets/icons/trust-activated.svg" : "../assets/icons/trust.svg"
                                 scale: trustActivate.containsMouse ? 1.1 : 1.0
