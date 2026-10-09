@@ -12,6 +12,7 @@ PlasmoidItem {
     property color radarScanning: "#495F94"
     property color radarColor: "#5a468c"
     property color textboxColor: '#1a1428'
+    property color redHighlight: "#DA3E62"
     property var scanningLimit: 1000*60
 
     property var btEnabled: bluetoothManager.bluetoothEnabled
@@ -152,12 +153,26 @@ PlasmoidItem {
         btManagerScan: bluetoothManager
     }
 
+    Text {
+    anchors.top: radarDisplay.bottom
+    anchors.topMargin: 24 
+    anchors.horizontalCenter: radarDisplay.horizontalCenter
+    horizontalAlignment: Text.AlignHCenter
+    width: radarDisplay.width
+    elide: Text.ElideRight
+    visible: btEnabled && bluetoothManager.statusState !== "idle"
+    text: bluetoothManager.statusState === "connecting" ? "Connecting…" : "Failed to connect"
+    font.family: haloFont.name
+    font.pixelSize: 14
+    color: bluetoothManager.statusState === "failed" ? redHighlight : purpleHighlight
+}
+
         // BT Off Screen
         Image {
             id: offImage
             anchors.top: parent.top
             anchors.topMargin: 50
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.centerIn: parent.centerIn
             width: 200
             height: 200
             sourceSize.width: width * 2
