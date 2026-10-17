@@ -107,7 +107,7 @@ Item {
             setConnectedState(address, "connecting")
 
             connectedTimers[address] = timerComp.createObject(root, {
-                interval: 10000,
+                interval: 15000,
                 action: function () {
                     delete connectedTimers[address]
                     failConnect(address)

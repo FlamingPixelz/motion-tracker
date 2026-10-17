@@ -67,6 +67,7 @@ PlasmoidItem {
 
 
     fullRepresentation: Item {
+
         Layout.minimumWidth: 450
         Layout.minimumHeight: 200
 
@@ -153,18 +154,15 @@ PlasmoidItem {
         btManagerScan: bluetoothManager
     }
 
-    Text {
+    TextAnimation {
     anchors.top: radarDisplay.bottom
     anchors.topMargin: 24 
     anchors.horizontalCenter: radarDisplay.horizontalCenter
-    horizontalAlignment: Text.AlignHCenter
     width: radarDisplay.width
-    elide: Text.ElideRight
-    visible: btEnabled && bluetoothManager.statusState !== "idle"
-    text: bluetoothManager.statusState === "connecting" ? "Connecting…" : "Failed to connect"
-    font.family: haloFont.name
-    font.pixelSize: 14
-    color: bluetoothManager.statusState === "failed" ? redHighlight : purpleHighlight
+    status: btEnabled ? bluetoothManager.statusState : "idle"
+    fontFamily: haloFont.name
+    textColour: purpleHighlight
+    failedColour: redHighlight
 }
 
         // BT Off Screen
@@ -172,7 +170,7 @@ PlasmoidItem {
             id: offImage
             anchors.top: parent.top
             anchors.topMargin: 50
-            anchors.centerIn: parent.centerIn
+            anchors.horizontalCenter: parent.horizontalCenter
             width: 200
             height: 200
             sourceSize.width: width * 2

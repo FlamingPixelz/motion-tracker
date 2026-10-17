@@ -349,9 +349,9 @@ import QtQuick.Controls
                                 anchors.top: parent.top
                                 anchors.left: parent.left
                                 anchors.leftMargin: 258
-                                anchors.topMargin: 5
-                                width: 35
-                                height: 35
+                                anchors.topMargin: 7
+                                width: 33
+                                height: 33
                                 mipmap: false
                                 source: model.blocked ? "../assets/icons/killjoy-activated.svg" : "../assets/icons/killjoy.svg"
                                 scale: activateBlock.containsMouse ? 1.1 : 1.0
