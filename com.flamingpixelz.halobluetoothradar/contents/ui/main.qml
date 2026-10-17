@@ -123,7 +123,7 @@ PlasmoidItem {
             transformOrigin: Item.TopLeft
 
             readonly property real introScale: 1.2
-            property real offsetY: -40
+            property real offsetY: -70
 
 
             scale: root.introState ? introScale : 1
@@ -153,19 +153,6 @@ PlasmoidItem {
                     btManagerScan: bluetoothManager
                 }
 
-                Text {
-                    anchors.fill: parent
-                    anchors.top: radarDisplay.bottom
-                    anchors.topMargin: 160
-                    horizontalAlignment: Text.AlignHCenter
-                    text: "CLICK THE MOTION TRACKER TO FIND DEVICES"
-                    font.family: haloFont.name
-                    color: purpleHighlight
-                    font.pixelSize: 12
-                    visible: introState
-
-                }
-
                 MouseArea {
                     id: scanMouseArea
                     anchors.fill: parent
@@ -179,6 +166,44 @@ PlasmoidItem {
 
                 Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.InOutQuad } }
             }
+        }
+
+        Rectangle {
+            
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: radarGroup.bottom
+            anchors.topMargin: 42
+            color: textboxColor
+            width: 450
+            height: 25
+            visible: introState && btEnabled
+
+            Rectangle {
+                anchors.left: parent.left
+                width: 5
+                height: 25
+                color: purpleHighlight
+                opacity: 0.6
+                visible: introState && btEnabled
+    }
+            Rectangle {
+                anchors.right: parent.right
+                width: 5
+                height: 25
+                color: purpleHighlight
+                opacity: 0.6
+                visible: introState && btEnabled
+    }
+            Text {
+                anchors.centerIn: parent
+                text: "CLICK THE MOTION TRACKER TO FIND DEVICES"
+                font.family: haloFont.name
+                color: purpleHighlight
+                font.pixelSize: 14
+                visible: introState && btEnabled
+                opacity: root.introState ? 1 : 0
+                Behavior on opacity { NumberAnimation { duration: 500 } }
+                }
         }
 
     TextAnimation {
