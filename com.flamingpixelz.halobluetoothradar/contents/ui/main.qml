@@ -17,6 +17,8 @@ PlasmoidItem {
 
     property var btEnabled: bluetoothManager.bluetoothEnabled
     property var btDiscovering: bluetoothManager.discovering
+    property bool hasScanned: false
+    readonly property bool introState: bluetoothManager.devicesModel.count === 0 && !btDiscovering
 
     BluetoothManager {
         id: bluetoothManager
@@ -112,57 +114,83 @@ PlasmoidItem {
                 }
             }
         }
-
-        Radar {
-            id: radarDisplay
-            anchors.top: parent.top
-            anchors.topMargin: 90
-            anchors.left: parent.left
-            anchors.leftMargin: 20
+        
+        Item {
+            id: radarGroup
             width: 150
             height: 150
-            devicesModel: bluetoothManager.devicesModel
             visible: btEnabled
-            active: root.expanded && btEnabled
-            radarColour: btDiscovering ? radarScanning : radarColor
-            scale: scanMouseArea.pressed ? 0.95 : 1.0
+            transformOrigin: Item.TopLeft
 
-            ScanningBar {
-                anchors.top: radarDisplay.top
-                anchors.topMargin: -97
-                anchors.left: radarDisplay.left
-                anchors.leftMargin: -22.5
-                width: 195
-                height: 190
-                btManagerScan: bluetoothManager
-    }
+            readonly property real introScale: 1.2
+            property real offsetY: -40
 
-            // Start scan
-            MouseArea {
-                id: scanMouseArea
+
+            scale: root.introState ? introScale : 1
+            x: root.introState ? parent.width / 2 - 75 * introScale : 20
+            y: root.introState 
+            ? parent.height / 2 - 26.5 * introScale + offsetY: 90
+
+            Behavior on scale { NumberAnimation { duration: 700; easing.type: Easing.OutCubic } }
+            Behavior on x     { NumberAnimation { duration: 700; easing.type: Easing.OutCubic } }
+            Behavior on y     { NumberAnimation { duration: 700; easing.type: Easing.OutCubic } }
+
+            Radar {
+                id: radarDisplay
                 anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-                onClicked: btDiscovering ? bluetoothManager.stopScan() : bluetoothManager.startScan()
-            }        
+                devicesModel: bluetoothManager.devicesModel
+                active: root.expanded && btEnabled
+                radarColour: btDiscovering ? radarScanning : radarColor
+                scale: scanMouseArea.pressed ? 0.95 : 1.0
 
-            Behavior on scale {
-                NumberAnimation {
-                    duration: 100
-                    easing.type: Easing.InOutQuad
+                ScanningBar {
+                    anchors.top: radarDisplay.top
+                    anchors.topMargin: -97
+                    anchors.left: radarDisplay.left
+                    anchors.leftMargin: -22.5
+                    width: 195
+                    height: 190
+                    btManagerScan: bluetoothManager
                 }
+
+                Text {
+                    anchors.fill: parent
+                    anchors.top: radarDisplay.bottom
+                    anchors.topMargin: 160
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "CLICK THE MOTION TRACKER TO FIND DEVICES"
+                    font.family: haloFont.name
+                    color: purpleHighlight
+                    font.pixelSize: 12
+                    visible: introState
+
+                }
+
+                MouseArea {
+                    id: scanMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        root.hasScanned = true
+                        btDiscovering ? bluetoothManager.stopScan() : bluetoothManager.startScan()
+                    }
+                }
+
+                Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.InOutQuad } }
+            }
         }
-    } 
 
     TextAnimation {
-    anchors.top: radarDisplay.bottom
+    anchors.top: radarGroup.bottom
     anchors.topMargin: 10 
-    anchors.horizontalCenter: radarDisplay.horizontalCenter
-    width: radarDisplay.width
+    anchors.horizontalCenter: radarGroup.horizontalCenter
+    width: radarGroup.width
     status: btEnabled ? bluetoothManager.statusState : "idle"
     fontFamily: haloFont.name
     textColour: purpleHighlight
     failedColour: redHighlight
+    visible: btEnabled
 }
 
         // BT Off Screen
@@ -233,12 +261,13 @@ PlasmoidItem {
             id: deviceList
             anchors.top: parent.top
             anchors.topMargin: 50
-            anchors.left: radarDisplay.right
-            anchors.leftMargin: 30
+            anchors.left: parent.left
+            anchors.leftMargin: 200
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            visible: btEnabled
-
+            opacity: root.introState ? 0 : 1
+            visible: btEnabled && opacity > 0
+            Behavior on opacity { NumberAnimation { duration: 400 } }
             btManager: bluetoothManager
             fontFamily: haloFont.name
         }
