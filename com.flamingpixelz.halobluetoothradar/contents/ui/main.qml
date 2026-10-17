@@ -127,17 +127,15 @@ PlasmoidItem {
             radarColour: btDiscovering ? radarScanning : radarColor
             scale: scanMouseArea.pressed ? 0.95 : 1.0
 
-            Image {
+            ScanningBar {
                 anchors.top: radarDisplay.top
+                anchors.topMargin: -97
                 anchors.left: radarDisplay.left
                 anchors.leftMargin: -22.5
-                anchors.topMargin: -97
-                source: "../assets/icons/purple-health.svg"
-                sourceSize.width: width * 2
-                sourceSize.height: height * 2
                 width: 195
                 height: 190
-            }
+                btManagerScan: bluetoothManager
+    }
 
             // Start scan
             MouseArea {
@@ -155,16 +153,6 @@ PlasmoidItem {
                 }
         }
     } 
-
-    ScanningBar {
-        anchors.top: radarDisplay.bottom
-        anchors.left: radarDisplay.left
-        anchors.topMargin: 10
-        width: 150
-        height: 6
-        visible: btDiscovering
-        btManagerScan: bluetoothManager
-    }
 
     TextAnimation {
     anchors.top: radarDisplay.bottom
