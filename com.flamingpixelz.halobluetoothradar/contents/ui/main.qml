@@ -156,7 +156,7 @@ PlasmoidItem {
 
     TextAnimation {
     anchors.top: radarDisplay.bottom
-    anchors.topMargin: 24 
+    anchors.topMargin: 10 
     anchors.horizontalCenter: radarDisplay.horizontalCenter
     width: radarDisplay.width
     status: btEnabled ? bluetoothManager.statusState : "idle"
