@@ -116,7 +116,7 @@ PlasmoidItem {
         Radar {
             id: radarDisplay
             anchors.top: parent.top
-            anchors.topMargin: 60
+            anchors.topMargin: 90
             anchors.left: parent.left
             anchors.leftMargin: 20
             width: 150
@@ -126,6 +126,18 @@ PlasmoidItem {
             active: root.expanded && btEnabled
             radarColour: btDiscovering ? radarScanning : radarColor
             scale: scanMouseArea.pressed ? 0.95 : 1.0
+
+            Image {
+                anchors.top: radarDisplay.top
+                anchors.left: radarDisplay.left
+                anchors.leftMargin: -22.5
+                anchors.topMargin: -97
+                source: "../assets/icons/purple-health.svg"
+                sourceSize.width: width * 2
+                sourceSize.height: height * 2
+                width: 195
+                height: 190
+            }
 
             // Start scan
             MouseArea {
