@@ -28,8 +28,11 @@ import QtQuick
              
     font.family: fontFamily
     font.pixelSize: 14
-    text: shownStatus === "connecting" ? "Connecting" + ".".repeat(dots) : "Failed to Connect"
-    color: shownStatus === "failed" ? failedColour : textColour
+    text: shownStatus === "connecting" ? "Connecting" + ".".repeat(dots) 
+    : shownStatus === "pairing" ? "Pairing" + ".".repeat(dots)
+    : shownStatus === "pairFailed" ? "Failed to Pair"
+    : "Failed to Connect"
+    color: (shownStatus === "failed" || shownStatus === "pairFailed") ? failedColour : textColour
     opacity: status === "idle" ? 0:1
     visible: opacity > 0
 
@@ -43,7 +46,7 @@ import QtQuick
     Timer {
         interval: 400
         repeat: true
-        running: root.status === "connecting"
+        running: root.status === "connecting" || root.status === "pairing"
         onRunningChanged: if(running) {
             root.dots = 0
         }

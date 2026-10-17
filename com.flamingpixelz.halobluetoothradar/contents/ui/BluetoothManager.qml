@@ -10,6 +10,7 @@ Item {
     property bool isConnected : false
     readonly property bool bluetoothEnabled: manager.bluetoothOperational
     readonly property bool discovering: manager.usableAdapter ? manager.usableAdapter.discovering : false
+    readonly property bool busy: statusState === "connecting" || statusState === "pairing"
     property var connectedStates: ({})
     property var connectedTimers: ({})
     property string statusState: "idle"
@@ -65,6 +66,20 @@ Item {
         })
     }
 
+    function failPair(address) {
+        if(connectedStates[address] !== "pairing") return
+        stopTimer(address)
+        setConnectedState(address, "pairFailed")
+        timerComp.createObject(root, {
+            interval: 5000,
+            action: function () {
+                if(connectedStates[address] === "pairFailed") {
+                    setConnectedState(address, "idle")
+                }
+            }
+        })
+    }
+
 
     function toggleBt() {
         var enable = !manager.bluetoothOperational
@@ -100,7 +115,7 @@ Item {
 
         function connectDevice(address) {
             var device = deviceForAddress(address)
-            if (!device || statusState === "connecting") {
+            if (!device || busy) {
                 return
             }
 
@@ -122,6 +137,43 @@ Item {
                 }
             })
         }
+
+        function pairDevice(address) {
+            var device = deviceForAddress(address)
+            if (!device || busy) return
+
+            setConnectedState(address, "pairing")
+
+            connectedTimers[address] = timerComp.createObject(root, {
+                interval: 30000,
+                action: function () {
+                    delete connectedTimers[address]
+                    failPair(address)
+                    device.cancelPairing()
+                }
+            })
+
+            var call = device.pair()
+            call.finished.connect(function (c) {
+                if(c.error) {
+                    failPair(address)
+                }
+            })            
+    }
+
+    function finishPair(address) {
+        if(connectedStates[address] !== "pairing") return
+
+        stopTimer(address)
+        setConnectedState(address, "idle")
+        timerComp.createObject(root, {
+            interval: 500,
+            action: function() {
+                connectDevice(address)
+            }
+        })
+    }
+
 
         function disconnectDevice(address) {
             var device = deviceForAddress(address)
@@ -252,13 +304,6 @@ Item {
         return device.paired || (root.discovering && filterBtDevice(device))
     }
 
-    function pairDevice(address) {
-    var device = deviceForAddress(address)
-    if (device) {
-        device.pair()
-    }
-}
-
 function pruneUnpairedDevices() {
     for (var i = devicesModel.count - 1; i >= 0; i--) {
         if (!devicesModel.get(i).paired) {
@@ -305,11 +350,16 @@ Connections {
 
         function onDeviceChanged(device) {
             var index = indexOfDevice(device.address)
+            var connection = connectedStates[device.address]
+
             if (isRelevantDevice(device)) {
 
-                if(device.connected && connectedStates[device.address]) {
+                if((device.connected && connection === "connecting")) {
                     stopTimer(device.address)
                     setConnectedState(device.address, "idle")
+                }
+                else if(device.paired && connection === "pairing") {
+                    finishPair(device.address)
                 }
 
                 var entry = deviceToEntry(device)
