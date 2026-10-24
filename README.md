@@ -4,7 +4,7 @@ This is a personal project built fully in QML for KDE Plasma on Linux, with all 
 
 ## Features:
 
-- Full Bluetooth functionality for connecting discovering, pairing, trusting, forgetting, and blocking Bluetooth devices
+- Full Bluetooth functionality for connecting, discovering, pairing, trusting, forgetting, and blocking Bluetooth devices
 - Animated motion tracker that 'tracks' each device as a randomly moving blip like you would see in the game. The blip is a different colour depending on its status, which includes discovered but not paired, paired but not connected, and connected
 - An initial state with the Motion Tracker larger and giving instructions on how to start, which occurs if you have no devices connected yet
 - Devices with batteries will have live update of battery status with a colour changing icon
@@ -15,31 +15,38 @@ This is a personal project built fully in QML for KDE Plasma on Linux, with all 
 - Can turn Bluetooth off, which displays an animated Fog skull (since Fog turns off the motion tracker in game)
 
 ## Installation
-This is a widget for KDE Plasma 6, and tested on CachyOS. It uses packages that will not work on lower versions, and since I haven't tested this on other distros, I might not be aware of issues for that platform, so be warned.
+This is a widget for KDE Plasma 6, and tested on CachyOS. It uses packages that will not work on Plasma 5, and since I haven't tested this on other distros, I might not be aware of issues for that platform, so be warned.
 
-The Bluetooth functionality uses the blue-qt module, so this must be installed on your system (make sure to check what package manager you use):
+The Bluetooth functionality uses the bluez-qt module, so this must be installed on your system (make sure to check what package manager you use):
 
 Arch:
-> sudo pacman -S bluez-qt
-
+```bash
+sudo pacman -S bluez-qt
+```
 Fedora:
-> sudo dnf install kf6-bluez-qt
-
-Debian / Ubuntu / Kubuntu
-> sudo apt install qnl6-module-org-kde-bluezqt
-
+```bash
+sudo dnf install kf6-bluez-qt
+```
+Debian / Ubuntu / Kubuntu:
+```bash
+sudo apt install qml6-module-org-kde-bluezqt
+```
 Make sure that your bluetooth service is running using (look for active(running)):
-> systemctl status bluetooth
+```bash 
+systemctl status bluetooth
+```
 
 If it isn't running, use the following command to enable it:
-> sudo systemctl enable --now bluetooth
-
+```bash
+sudo systemctl enable --now bluetooth
+```
 Download motion-tracker.plasmoid from the releases page, right click desktop and go into edit mode, click add or manage widgets, click get new, and then install from local file
 
 OR:
-> curl -LO https://github.com/FlamingPixelz/<repo>/releases/latest/download/motion-tracker.plasmoid
-> kpackagetool6 -t Plasma/Applet --install motion-tracker.plasmoid
-
+```bash
+curl -LO https://github.com/FlamingPixelz/<repo>/releases/latest/download/motion-tracker.plasmoid
+kpackagetool6 -t Plasma/Applet --install motion-tracker.plasmoid
+```
 And go into edit mode, add or manage widgets, and search for Motion-Tracker.
 
 Enjoy :)
