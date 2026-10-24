@@ -1,9 +1,9 @@
 {
     "KPlugin": {
-        "Name": "Halo Bluetooth Radar",
+        "Name": "Motion-Tracker",
         "Description": "Halo-style radar for searching for bluetooth devices",
         "Icon": "preferences-system-bluetooth",
-        "Id": "com.flamingpixelz.halobluetoothradar",
+        "Id": "com.flamingpixelz.motionTracker",
         "Version": "1.0"
     },
     "KPackageStructure": "Plasma/Applet",
