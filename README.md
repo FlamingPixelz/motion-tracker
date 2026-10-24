@@ -57,6 +57,22 @@ And go into edit mode, add or manage widgets, and search for Motion-Tracker.
 
 Enjoy :)
 
+## Update / Uninstall
+
+To update, download the latest release
+```bash
+curl -LO https://github.com/FlamingPixelz/motion-tracker/releases/latest/download/motion-tracker.plasmoid
+kpackagetool6 -t Plasma/Applet --upgrade motion-tracker.plasmoid
+```
+If the old version still shows, restart Plasma
+```bash
+plasmashell --replace &
+```
+To uninstall:
+```bash
+kpackagetool6 -t Plasma/Applet --remove com.flamingpixelz.motionTracker
+```
+
 ## Plans For Future Features
 
 - A full settings menu that will allow you to change the colours of everything to match your own desktop, and tweak other aspects of the widget
