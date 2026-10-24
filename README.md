@@ -44,7 +44,7 @@ Download motion-tracker.plasmoid from the releases page, right click desktop and
 
 OR:
 ```bash
-curl -LO https://github.com/FlamingPixelz/motion-tracker.git/releases/latest/download/motion-tracker.plasmoid
+curl -LO https://github.com/FlamingPixelz/motion-tracker/releases/latest/download/motion-tracker.plasmoid
 kpackagetool6 -t Plasma/Applet --install motion-tracker.plasmoid
 ```
 And go into edit mode, add or manage widgets, and search for Motion-Tracker.
