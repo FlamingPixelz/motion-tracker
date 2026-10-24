@@ -1,12 +1,14 @@
-Bluetooth widgets are boring, so I decided to make one that is themed around Halo! 
+<h1 align="center">Motion Tracker</h1>
 
-This is a personal project built fully in QML for KDE Plasma on Linux, with all of the icons made using Inkscape. 
+Bluetooth widgets are boring, so I decided to make one that is themed around Halo for KDE Plasma 6!
+
 <p align="center">
 <img src="https://github.com/user-attachments/assets/09ea7a42-e5a0-49b1-9cef-36ffa6428f68" width="45%" />
 <img src="https://github.com/user-attachments/assets/6dc66c37-6f34-4a39-ab16-213d43349c0a" width="45%" />
 <img src="https://github.com/user-attachments/assets/a12a3771-07bc-4d1c-abbb-29fa266c0f34" width="45%" />
 </p>
-## Features:
+
+## Features
 
 - Full Bluetooth functionality for connecting, discovering, pairing, trusting, forgetting, and blocking Bluetooth devices
 - Animated motion tracker that 'tracks' each device as a randomly moving blip like you would see in the game. The blip is a different colour depending on its status, which includes discovered but not paired, paired but not connected, and connected
@@ -35,7 +37,7 @@ Debian / Ubuntu / Kubuntu:
 ```bash
 sudo apt install qml6-module-org-kde-bluezqt
 ```
-Make sure that your bluetooth service is running using (look for active(running)):
+Make sure that your bluetooth service is running (look for active(running)):
 ```bash 
 systemctl status bluetooth
 ```
@@ -62,5 +64,8 @@ Enjoy :)
 - Add an animated star scape in the background, and a matrix-like scan effect for scanning using forerunner symbols, because animation is cool
 - Add more error handling, such as limiting input for the alias name and truncating really long Bluetooth names
 
+## Why I Made This
+I'm a Software Engineering student who loves UI, programming, design, and Linux. Halo has been my favourite game series since I was 4 years old. This year I discovered the joys of Arch Linux and Linux ricing, and decided that I wanted a fully custom setup themed around Halo. I have experience using JavaScript and web design, so I was able to pick up QML very quickly. This is the first widget that I have made from scratch, and I plan to make more in a similar theme. As an engineer, I wanted to make the widget as feature complete as possible, so I plan to keep improving on it over time.
+
 ## Disclaimer
-This is a fan project. I am not affiliated with Halo, Microsoft, or Halo Studies (rip) in any way. All of the icons in this widget were recreated by me using vector tools.
+This is a fan project. I am not affiliated with Halo, Microsoft, or Halo Studies (rip) in any way. All of the icons in this widget were recreated by me using vector tools (Inkscape).
