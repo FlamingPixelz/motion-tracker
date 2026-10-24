@@ -1,7 +1,11 @@
 Bluetooth widgets are boring, so I decided to make one that is themed around Halo! 
 
 This is a personal project built fully in QML for KDE Plasma on Linux, with all of the icons made using Inkscape. 
-
+<p align="center">
+<img src="https://github.com/user-attachments/assets/09ea7a42-e5a0-49b1-9cef-36ffa6428f68" width="45%" />
+<img src="https://github.com/user-attachments/assets/6dc66c37-6f34-4a39-ab16-213d43349c0a" width="45%" />
+<img src="https://github.com/user-attachments/assets/a12a3771-07bc-4d1c-abbb-29fa266c0f34" width="45%" />
+</p>
 ## Features:
 
 - Full Bluetooth functionality for connecting, discovering, pairing, trusting, forgetting, and blocking Bluetooth devices
@@ -57,3 +61,6 @@ Enjoy :)
 - Being able to individually colour your connected blips from the main screen
 - Add an animated star scape in the background, and a matrix-like scan effect for scanning using forerunner symbols, because animation is cool
 - Add more error handling, such as limiting input for the alias name and truncating really long Bluetooth names
+
+## Disclaimer
+This is a fan project. I am not affiliated with Halo, Microsoft, or Halo Studies (rip) in any way. All of the icons in this widget were recreated by me using vector tools.
