@@ -17,6 +17,7 @@ Bluetooth widgets are boring, so I decided to make one that is themed around Hal
 - Widget icon changes colour depending on status, such as BT off, idle, scanning, and device connected
 - Clicking on the motion tracker starts discovering nearby devices, which is set on a 60 second timer that recharges the shield, in Halo 2 style
 - Clicking on the device name drops down a list that shows the type of device, MAC address, alias so you can name a device, and icons for trust, forget and block
+- Trusted devices will automatically connect when turned on
 - Messages that display when attempting to pair / connect that show when failure occurs
 - Can turn Bluetooth off, which displays an animated Fog skull (since Fog turns off the motion tracker in game)
 
