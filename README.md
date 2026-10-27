@@ -65,10 +65,8 @@ To update, download the latest release
 curl -LO https://github.com/FlamingPixelz/motion-tracker/releases/latest/download/motion-tracker.plasmoid
 kpackagetool6 -t Plasma/Applet --upgrade motion-tracker.plasmoid
 ```
-If the old version still shows, restart Plasma
-```bash
-plasmashell --replace &
-```
+If the old version still shows, you may need to restart your system, or restart plasma.
+
 To uninstall:
 ```bash
 kpackagetool6 -t Plasma/Applet --remove com.flamingpixelz.motionTracker
